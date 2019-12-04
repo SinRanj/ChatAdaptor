@@ -22,6 +22,9 @@ class ChatViewContoller: UIViewController {
     private var chatViewHolderBottomConst:NSLayoutConstraint!
     private var chatViewHolderHeightConst:NSLayoutConstraint!
     
+    
+    
+    var messages = ["Hi", "My name is Sina", "Where did I come from? Well I am not sure why you are asking these kind of question, I rather not to answer that."]
     override func viewDidLoad() {
         initializer()
     }
@@ -31,6 +34,7 @@ class ChatViewContoller: UIViewController {
         chatViewHolder = UIView(frame: CGRect.zero)
         self.view.addSubview(table)
         self.view.addSubview(chatViewHolder)
+        table.separatorStyle = .none
         
         chatViewConfigurations()
         tableConfigurations()
@@ -41,12 +45,14 @@ class ChatViewContoller: UIViewController {
             object: nil)
         
     }
+    
     private func tableConfigurations(){
         table.delegate = self
         table.dataSource = self
         
         view.constraintTopWithAnotherView(view: table, bottomView: chatViewHolder)
-        table.register(UITableViewCell.self, forCellReuseIdentifier: "chatCell")
+        table.register(ChatReceiveCell.self, forCellReuseIdentifier: "receiveCell")
+        table.register(ChatSendCell.self, forCellReuseIdentifier: "sendCell")
     }
     
     private func chatViewConfigurations(){
@@ -88,14 +94,16 @@ class ChatViewContoller: UIViewController {
 
 extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return 20
+        return messages.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "chatCell", for: indexPath)
-        cell.textLabel?.numberOfLines = 0
-        cell.textLabel?.text = "sss"
-        return cell
+//        let cell = tableView.dequeueReusableCell(withIdentifier: "receiveCell", for: indexPath) as? ChatReceiveCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "sendCell", for: indexPath) as? ChatSendCell
+
+        cell!.date = "2w ago"
+        cell!.message = messages[indexPath.row]
+        return cell!
     }
     
     

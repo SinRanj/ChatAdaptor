@@ -8,7 +8,17 @@
 
 import UIKit
 
+private var assocKey : UInt8 = 0
 extension UIView {
+    var identifier:String?{
+        get{
+            return objc_getAssociatedObject(self, &assocKey) as? String
+        }
+        set{
+            objc_setAssociatedObject(self, &assocKey, newValue, objc_AssociationPolicy.OBJC_ASSOCIATION_RETAIN)
+        }
+    }
+    
     func constraintFiller(view:UIView,heightConst:CGFloat=0){
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1, constant: 0).isActive = true
@@ -69,6 +79,46 @@ extension UIView {
         
     }
     
+    func constraintWithCustomMargin(view:UIView, left:CGFloat, leftRelation:NSLayoutConstraint.Relation = .equal, right:CGFloat, rightRelation:NSLayoutConstraint.Relation = .equal,top:CGFloat,topRelation:NSLayoutConstraint.Relation = .equal, bottom:CGFloat,bottomRelation:NSLayoutConstraint.Relation = .equal){
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: topRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: top).isActive = true
+        
+        let bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: bottomRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: bottom)
+        
+        if let identifier = view.identifier {
+            bottom.identifier = "\(identifier) bottomConst"
+        }
+        
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: leftRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: left).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: rightRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: right).isActive = true
+        NSLayoutConstraint.activate([bottom])
+        
+    }
+    
+    func constraintWithLeadingAndTrailing(view:UIView, left:CGFloat, right:CGFloat,top:CGFloat,topActive:Bool=true, bottom:CGFloat, secondView:UIView ){
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        if topActive {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: top).isActive = true
+        }
+        
+        let bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: bottom)
+        
+        if let identifier = view.identifier {
+            bottom.identifier = "\(identifier) bottomConst"
+        }
+        
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.leading, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.leading, multiplier: 1, constant: left).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.trailing, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.trailing, multiplier: 1, constant: right).isActive = true
+        
+        NSLayoutConstraint.activate([bottom])
+    }
     
     func constraintFinder(identifier:String)->NSLayoutConstraint?{
         var constraint:NSLayoutConstraint?
@@ -78,5 +128,10 @@ extension UIView {
             }
         }
         return constraint
+    }
+    
+    func cornerRadius(radius:CGFloat=8){
+        layer.masksToBounds = true
+        layer.cornerRadius = radius
     }
 }
