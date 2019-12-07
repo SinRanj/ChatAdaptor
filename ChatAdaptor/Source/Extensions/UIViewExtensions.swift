@@ -62,24 +62,64 @@ extension UIView {
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: margin).isActive = true
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: -margin).isActive = true
-        
     }
-    func constraintWithCustomWidthAndHeight(view:UIView,margin:CGFloat = 8, width:CGFloat, height:CGFloat){
+    
+    func constraintLeftWithAnotherViewNoWidthNoHeight(view:UIView,rightView:UIView,rightMargin:CGFloat = 8, bottomMargin:CGFloat = 8){
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: margin).isActive = true
         
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -margin).isActive = true
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -bottomMargin).isActive = true
         
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -margin).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: -rightMargin).isActive = true
+    }
+    
+    func constraintLeftWithAnotherViewCenter(view:UIView,rightView:UIView,rightMargin:CGFloat = 8, width:CGFloat, height:CGFloat){
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView, attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1, constant: -rightMargin).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: -rightMargin).isActive = true
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: width).isActive = true
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: height).isActive = true
+    }
+    
+    func constraintWithCustomWidthAndHeight(view:UIView,margin:CGFloat = 8, width:CGFloat, height:CGFloat, isLeft:Bool=false, isRight:Bool=false){
+        view.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: margin).isActive = true
+        
+
+        
+        if !isLeft {
+            if isRight {
+                NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -margin).isActive = true
+            }
+            else {
+                NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -margin).isActive = true
+                NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -margin).isActive = true
+            }
+
+        }
+        else {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: margin).isActive = true
+        }
+        
+
+        let width = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: width)
+        if let identifier = view.identifier {
+            width.identifier = "\(identifier) widthConst"
+        }
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: height).isActive = true
+        
+        NSLayoutConstraint.activate([width])
         
     }
     
-    func constraintWithCustomMargin(view:UIView, left:CGFloat, leftRelation:NSLayoutConstraint.Relation = .equal, right:CGFloat, rightRelation:NSLayoutConstraint.Relation = .equal,top:CGFloat,topRelation:NSLayoutConstraint.Relation = .equal, bottom:CGFloat,bottomRelation:NSLayoutConstraint.Relation = .equal){
+    func constraintWithCustomMargin(view:UIView, left:CGFloat, leftRelation:NSLayoutConstraint.Relation = .equal, right:CGFloat, rightRelation:NSLayoutConstraint.Relation = .equal,top:CGFloat,topRelation:NSLayoutConstraint.Relation = .equal, bottom:CGFloat,bottomRelation:NSLayoutConstraint.Relation = .equal, leftView:UIView?=nil, rightView:UIView?=nil){
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -91,11 +131,21 @@ extension UIView {
             bottom.identifier = "\(identifier) bottomConst"
         }
         
-        
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: leftRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: left).isActive = true
-        
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: rightRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: right).isActive = true
-        NSLayoutConstraint.activate([bottom])
+        if let leftView = leftView {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: leftRelation, toItem: leftView, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: left).isActive = true
+        }
+        else {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: leftRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: left).isActive = true
+        }
+        if let rightView = rightView {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: rightRelation, toItem: rightView, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: right).isActive = true
+            NSLayoutConstraint.activate([bottom])
+        }
+        else {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: rightRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: right).isActive = true
+            NSLayoutConstraint.activate([bottom])
+        }
+
         
     }
     

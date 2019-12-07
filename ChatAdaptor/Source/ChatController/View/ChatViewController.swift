@@ -23,10 +23,11 @@ class ChatViewContoller: UIViewController {
     private var chatViewHolderHeightConst:NSLayoutConstraint!
     
     
-    
-    var messages = ["Hi", "My name is Sina", "Where did I come from? Well I am not sure why you are asking these kind of question, I rather not to answer that."]
+    var messages = [TextMessageModel]()
+
     override func viewDidLoad() {
         initializer()
+        mockDataGenerator()
     }
     
     private func initializer(){
@@ -44,6 +45,12 @@ class ChatViewContoller: UIViewController {
             name: UIResponder.keyboardWillChangeFrameNotification,
             object: nil)
         
+    }
+    
+    private func mockDataGenerator(){
+        let message = TextMessageModel()
+        messages = message.mockData()
+        table.reloadData()
     }
     
     private func tableConfigurations(){
@@ -98,12 +105,26 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-//        let cell = tableView.dequeueReusableCell(withIdentifier: "receiveCell", for: indexPath) as? ChatReceiveCell
-        let cell = tableView.dequeueReusableCell(withIdentifier: "sendCell", for: indexPath) as? ChatSendCell
+        let message = messages[indexPath.row]
+        if message.condition == .send {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "sendCell", for: indexPath) as? ChatSendCell
+            cell!.date = message.date
+            if let status = message.status {
+                cell!.status = "\(status)"
+            }
+            cell!.message = message.text
+            cell!.hasAvatar = message.avatar
+            
+            return cell!
+        }
+        else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "receiveCell", for: indexPath) as? ChatReceiveCell
+            cell!.date = message.date
+            cell!.message = message.text
+            cell!.hasAvatar = message.avatar
+            return cell!
+        }
 
-        cell!.date = "2w ago"
-        cell!.message = messages[indexPath.row]
-        return cell!
     }
     
     
