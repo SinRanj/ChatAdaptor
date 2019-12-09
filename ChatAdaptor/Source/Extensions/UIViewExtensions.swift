@@ -184,4 +184,27 @@ extension UIView {
         layer.masksToBounds = true
         layer.cornerRadius = radius
     }
+    
+    func drawLine(fromPoint start: CGPoint, toPoint end: CGPoint,color:CGColor = UIColor.gray.cgColor) {
+        let line = CAShapeLayer()
+        line.name = "line"
+        let linePath = UIBezierPath()
+        linePath.move(to: start)
+        linePath.addLine(to: end)
+        line.path = linePath.cgPath
+        line.fillColor = nil
+        line.opacity = 1.0
+        line.strokeColor = color
+        self.layer.addSublayer(line)
+    }
+    func removeLine(){
+        if let layers = self.layer.sublayers {
+            for i in layers {
+                if i.name == "line" {
+                    i.removeFromSuperlayer()
+                }
+            }
+        }
+
+    }
 }

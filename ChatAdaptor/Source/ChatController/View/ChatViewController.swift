@@ -21,8 +21,8 @@ class ChatViewContoller: UIViewController {
     
     private var chatViewHolderBottomConst:NSLayoutConstraint!
     private var chatViewHolderHeightConst:NSLayoutConstraint!
-    
-    
+    private var tapTable: UITapGestureRecognizer!
+
     var messages = [TextMessageModel]()
 
     override func viewDidLoad() {
@@ -40,10 +40,9 @@ class ChatViewContoller: UIViewController {
         chatViewConfigurations()
         tableConfigurations()
         
-        NotificationCenter.default.addObserver(self,
-            selector: #selector(self.keyboardNotification(notification:)),
-            name: UIResponder.keyboardWillChangeFrameNotification,
-            object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
+
         
     }
     
@@ -65,11 +64,13 @@ class ChatViewContoller: UIViewController {
     private func chatViewConfigurations(){
         textView = UITextView(frame: CGRect.zero)
         textView.delegate = self
+        textView.text = "Message..."
+        textView.textColor = UIColor.lightGray
+        
         sendButton = UIButton(frame: CGRect.zero)
         sendButton.setTitle("Send", for: UIControl.State.normal)
-        
-        chatViewHolder.backgroundColor = UIColor.black
-        textView.backgroundColor = UIColor.white
+        sendButton.setTitleColor(UIColor.black, for: .normal)
+        sendButton.addTarget(self, action: #selector(didTapSend), for: UIControl.Event.touchUpInside)
         
         chatViewHolder.addSubview(textView)
         chatViewHolder.addSubview(sendButton)
@@ -83,18 +84,61 @@ class ChatViewContoller: UIViewController {
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
     
+    func layouts(){
+        chatViewHolder.removeLine()
+        chatViewHolder.drawLine(fromPoint: CGPoint(x: 0, y: 0), toPoint: CGPoint(x: UIScreen.main.bounds.size.width, y: 0))
+    }
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
     
-    @objc func keyboardNotification(notification: NSNotification) {
-        if let userInfo = notification.userInfo {
-            let keyboardFrame: CGRect = (userInfo[UIResponder.keyboardFrameEndUserInfoKey] as! NSValue).cgRectValue
-            UIView.animate(withDuration: 0.4) {
-                self.chatViewHolderBottomConst.constant = -keyboardFrame.height
-                self.view.layoutIfNeeded()
+    private func updateMessages(){
+        table.reloadData()
+        table.scrollToRow(at: IndexPath(row: messages.count-1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+        
+    }
+    @objc private func didTapSend(){
+        if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" && textView.textColor != UIColor.lightGray {
+            messages.append(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil))
+            textView.text = ""
+            updateMessages()
+            chatViewHolderHeightConst.constant = originalChatViewHolderHeightConst
+        }
+    }
+    
+    
+    @objc func keyboardWillShow(notification: NSNotification) {
+        if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
+            tapTable = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+            tapTable.name = "tapTable"
+            table.addGestureRecognizer(tapTable)
+            if view.frame.origin.y == 0 {
+                self.view.frame.origin.y -= keyboardSize.height
             }
         }
+    }
+
+    @objc func keyboardWillHide(notification: NSNotification) {
+        if view.frame.origin.y != 0 {
+            self.view.frame.origin.y = 0
+        }
+    }
+    
+    @objc private func dismissKeyboard(){
+        textView.resignFirstResponder()
+        if let recognizers = self.table.gestureRecognizers {
+          for recognizer in recognizers {
+
+            if recognizer.name == self.tapTable.name {
+                self.table.removeGestureRecognizer(recognizer)
+            }
+          }
+        }
+    }
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews()
+          layouts()
     }
 }
 
@@ -124,10 +168,7 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
             cell!.hasAvatar = message.avatar
             return cell!
         }
-
     }
-    
-    
 }
 extension ChatViewContoller:UITextViewDelegate{
     func textViewDidChange(_ textView: UITextView) {
@@ -153,5 +194,17 @@ extension ChatViewContoller:UITextViewDelegate{
             }
         }
         oldTextViewSize = newFrame.size
+    }
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        if textView.textColor == UIColor.lightGray {
+            textView.text = nil
+            textView.textColor = UIColor.black
+        }
+    }
+    func textViewDidEndEditing(_ textView: UITextView) {
+        if textView.text.isEmpty {
+            textView.text = "Message..."
+            textView.textColor = UIColor.lightGray
+        }
     }
 }
