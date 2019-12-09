@@ -20,6 +20,7 @@
 		279FF7002396948600E333F8 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279FF6FE2396948600E333F8 /* UIViewExtensions.swift */; };
 		27B548B6239A3710008477FA /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B5239A3710008477FA /* MessageModel.swift */; };
 		27B548B8239A39BA008477FA /* TextMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B7239A39BA008477FA /* TextMessageModel.swift */; };
+		27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		279FF6FE2396948600E333F8 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
 		27B548B5239A3710008477FA /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		27B548B7239A39BA008477FA /* TextMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMessageModel.swift; sourceTree = "<group>"; };
+		27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 		279FF6FB2396948600E333F8 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				27DF14A0239E3F0200C1F465 /* Libraries */,
 				279FF7012396961300E333F8 /* ChatController */,
 				279FF6FD2396948600E333F8 /* Extensions */,
 			);
@@ -142,6 +145,22 @@
 				2710D2552397A9FF0051530F /* ChatCell.swift */,
 			);
 			path = Cell;
+			sourceTree = "<group>";
+		};
+		27DF14A0239E3F0200C1F465 /* Libraries */ = {
+			isa = PBXGroup;
+			children = (
+				27DF14A1239E3F0D00C1F465 /* Spotlight */,
+			);
+			path = Libraries;
+			sourceTree = "<group>";
+		};
+		27DF14A1239E3F0D00C1F465 /* Spotlight */ = {
+			isa = PBXGroup;
+			children = (
+				27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */,
+			);
+			path = Spotlight;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -218,6 +237,7 @@
 				279FF6EC2396946D00E333F8 /* ViewController.swift in Sources */,
 				2710D2562397A9FF0051530F /* ChatCell.swift in Sources */,
 				27B548B8239A39BA008477FA /* TextMessageModel.swift in Sources */,
+				27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */,
 				279FF7002396948600E333F8 /* UIViewExtensions.swift in Sources */,
 				27B548B6239A3710008477FA /* MessageModel.swift in Sources */,
 				2710D25423979C0E0051530F /* ChatSendCell.swift in Sources */,

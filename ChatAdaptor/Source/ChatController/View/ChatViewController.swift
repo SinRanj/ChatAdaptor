@@ -22,7 +22,8 @@ class ChatViewContoller: UIViewController {
     private var chatViewHolderBottomConst:NSLayoutConstraint!
     private var chatViewHolderHeightConst:NSLayoutConstraint!
     private var tapTable: UITapGestureRecognizer!
-
+    private var spotlight:SpotlightView!
+    
     var messages = [TextMessageModel]()
 
     override func viewDidLoad() {
@@ -59,6 +60,10 @@ class ChatViewContoller: UIViewController {
         view.constraintTopWithAnotherView(view: table, bottomView: chatViewHolder)
         table.register(ChatReceiveCell.self, forCellReuseIdentifier: "receiveCell")
         table.register(ChatSendCell.self, forCellReuseIdentifier: "sendCell")
+        
+        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
+        self.view.addGestureRecognizer(longPressRecognizer)
+        spotlight = SpotlightView(view: view)
     }
     
     private func chatViewConfigurations(){
@@ -133,6 +138,20 @@ class ChatViewContoller: UIViewController {
                 self.table.removeGestureRecognizer(recognizer)
             }
           }
+        }
+    }
+    
+    @objc func longPressed(sender: UILongPressGestureRecognizer) {
+
+        if sender.state == UIGestureRecognizer.State.began {
+            let touchPoint = sender.location(in: self.table)
+            if let indexPath = table.indexPathForRow(at: touchPoint) {
+                if spotlight.isApear == false {
+                    guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
+                    spotlight.addSpotlightToView(cell: cell)
+                }
+                
+            }
         }
     }
     
