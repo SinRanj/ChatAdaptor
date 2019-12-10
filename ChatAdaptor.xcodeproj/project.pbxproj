@@ -21,6 +21,7 @@
 		27B548B6239A3710008477FA /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B5239A3710008477FA /* MessageModel.swift */; };
 		27B548B8239A39BA008477FA /* TextMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B7239A39BA008477FA /* TextMessageModel.swift */; };
 		27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */; };
+		27DF14A5239E5A6E00C1F465 /* ChatMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A4239E5A6E00C1F465 /* ChatMenuView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -40,6 +41,7 @@
 		27B548B5239A3710008477FA /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		27B548B7239A39BA008477FA /* TextMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMessageModel.swift; sourceTree = "<group>"; };
 		27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightView.swift; sourceTree = "<group>"; };
+		27DF14A4239E5A6E00C1F465 /* ChatMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMenuView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -150,6 +152,7 @@
 		27DF14A0239E3F0200C1F465 /* Libraries */ = {
 			isa = PBXGroup;
 			children = (
+				27DF14A6239E5A7200C1F465 /* ChatMenu */,
 				27DF14A1239E3F0D00C1F465 /* Spotlight */,
 			);
 			path = Libraries;
@@ -161,6 +164,14 @@
 				27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */,
 			);
 			path = Spotlight;
+			sourceTree = "<group>";
+		};
+		27DF14A6239E5A7200C1F465 /* ChatMenu */ = {
+			isa = PBXGroup;
+			children = (
+				27DF14A4239E5A6E00C1F465 /* ChatMenuView.swift */,
+			);
+			path = ChatMenu;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -239,6 +250,7 @@
 				27B548B8239A39BA008477FA /* TextMessageModel.swift in Sources */,
 				27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */,
 				279FF7002396948600E333F8 /* UIViewExtensions.swift in Sources */,
+				27DF14A5239E5A6E00C1F465 /* ChatMenuView.swift in Sources */,
 				27B548B6239A3710008477FA /* MessageModel.swift in Sources */,
 				2710D25423979C0E0051530F /* ChatSendCell.swift in Sources */,
 				279FF6E82396946D00E333F8 /* AppDelegate.swift in Sources */,

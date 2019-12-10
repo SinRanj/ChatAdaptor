@@ -23,7 +23,7 @@ class ChatViewContoller: UIViewController {
     private var chatViewHolderHeightConst:NSLayoutConstraint!
     private var tapTable: UITapGestureRecognizer!
     private var spotlight:SpotlightView!
-    
+    private var keyboardIsVisible = false
     var messages = [TextMessageModel]()
 
     override func viewDidLoad() {
@@ -42,8 +42,10 @@ class ChatViewContoller: UIViewController {
         tableConfigurations()
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillShow(notification:)), name: UIResponder.keyboardWillShowNotification, object: nil)
+        
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
-
+        
+        NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         
     }
     
@@ -117,6 +119,7 @@ class ChatViewContoller: UIViewController {
             tapTable = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
             tapTable.name = "tapTable"
             table.addGestureRecognizer(tapTable)
+            keyboardIsVisible = true
             if view.frame.origin.y == 0 {
                 self.view.frame.origin.y -= keyboardSize.height
             }
@@ -127,6 +130,9 @@ class ChatViewContoller: UIViewController {
         if view.frame.origin.y != 0 {
             self.view.frame.origin.y = 0
         }
+    }
+    @objc func keyboardDidHide(notification: NSNotification) {
+        keyboardIsVisible = false
     }
     
     @objc private func dismissKeyboard(){
@@ -142,19 +148,35 @@ class ChatViewContoller: UIViewController {
     }
     
     @objc func longPressed(sender: UILongPressGestureRecognizer) {
-
         if sender.state == UIGestureRecognizer.State.began {
             let touchPoint = sender.location(in: self.table)
             if let indexPath = table.indexPathForRow(at: touchPoint) {
                 if spotlight.isApear == false {
-                    guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
-                    spotlight.addSpotlightToView(cell: cell)
+                    self.textView.resignFirstResponder()
+                    if keyboardIsVisible {
+                        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.3) {
+                            self.showSpotLight(indexPath: indexPath)
+                        }
+                    }
+                    else {
+                        self.showSpotLight(indexPath: indexPath)
+                    }
                 }
                 
             }
         }
     }
-    
+    private func showSpotLight(indexPath:IndexPath){
+        let rectOfCellInTableView = self.table.rectForRow(at: indexPath)
+        let completelyVisible = table.bounds.contains(rectOfCellInTableView)
+        if !completelyVisible {
+            self.table.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
+        }
+        guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
+        
+        let rectOfCellInSuperview = self.table.convert(rectOfCellInTableView, to: self.table.superview)
+        self.spotlight.addSpotlightToView(cell: cell,rect: rectOfCellInSuperview)
+    }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
           layouts()
