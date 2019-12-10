@@ -219,17 +219,25 @@ extension ChatViewContoller:UITextViewDelegate{
         newFrame.size = CGSize.init(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
         if newFrame.size.height > oldTextViewSize.height {
             if newFrame.size.height <= 72 {
-                chatViewHolderHeightConst.constant += 10
-                view.layoutIfNeeded()
+                UIView.animate(withDuration: 0.1) {
+                    self.chatViewHolderHeightConst.constant += 10
+                    self.view.layoutIfNeeded()
+                }
+
             }
         }
         else if newFrame.size.height < oldTextViewSize.height{
             if chatViewHolderHeightConst.constant > originalChatViewHolderHeightConst {
                 if textView.text == "" {
-                    chatViewHolderHeightConst.constant = originalChatViewHolderHeightConst
+                    UIView.animate(withDuration: 0.1) {
+                        self.chatViewHolderHeightConst.constant = self.originalChatViewHolderHeightConst
+                    }
                 }
                 else {
-                    chatViewHolderHeightConst.constant -= 10
+                    UIView.animate(withDuration: 0.1) {
+                        self.chatViewHolderHeightConst.constant -= 10
+                    }
+                    
                 }
                 view.layoutIfNeeded()
             }
