@@ -24,8 +24,8 @@ class ChatViewContoller: UIViewController {
     private var tapTable: UITapGestureRecognizer!
     private var spotlight:SpotlightView!
     private var keyboardIsVisible = false
-    var messages = [TextMessageModel]()
-
+    var messages: Array<MessageModel> = []
+    
     override func viewDidLoad() {
         initializer()
         mockDataGenerator()
@@ -52,6 +52,7 @@ class ChatViewContoller: UIViewController {
     private func mockDataGenerator(){
         let message = TextMessageModel()
         messages = message.mockData()
+        
         table.reloadData()
     }
     
@@ -60,9 +61,10 @@ class ChatViewContoller: UIViewController {
         table.dataSource = self
         
         view.constraintTopWithAnotherView(view: table, bottomView: chatViewHolder)
-        table.register(ChatReceiveCell.self, forCellReuseIdentifier: "receiveCell")
-        table.register(ChatSendCell.self, forCellReuseIdentifier: "sendCell")
-        
+        table.register(ChatTextReceiveCell.self, forCellReuseIdentifier: "receiveTextCell")
+        table.register(ChatTextSendCell.self, forCellReuseIdentifier: "sendTextCell")
+        table.register(ChatImageReceiveCell.self, forCellReuseIdentifier: "receiveImageCell")
+        table.register(ChatImageSendCell.self, forCellReuseIdentifier: "sendImageCell")
         let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressed(sender:)))
         self.view.addGestureRecognizer(longPressRecognizer)
         spotlight = SpotlightView(view: view)
@@ -190,25 +192,55 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let message = messages[indexPath.row]
-        if message.condition == .send {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "sendCell", for: indexPath) as? ChatSendCell
-            cell!.date = message.date
-            if let status = message.status {
-                cell!.status = "\(status)"
+        if let message = messages[indexPath.row] as? TextMessageModel {
+            if message.condition == .send {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "sendTextCell", for: indexPath) as? ChatTextSendCell
+                cell!.date = message.date
+                if let status = message.status {
+                    cell!.status = "\(status)"
+                }
+                cell!.message = message.text
+                cell!.hasAvatar = message.avatar
+                
+                return cell!
             }
-            cell!.message = message.text
-            cell!.hasAvatar = message.avatar
-            
-            return cell!
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "receiveTextCell", for: indexPath) as? ChatTextReceiveCell
+                cell!.date = message.date
+                cell!.message = message.text
+                cell!.hasAvatar = message.avatar
+                return cell!
+            }
         }
-        else {
-            let cell = tableView.dequeueReusableCell(withIdentifier: "receiveCell", for: indexPath) as? ChatReceiveCell
-            cell!.date = message.date
-            cell!.message = message.text
-            cell!.hasAvatar = message.avatar
-            return cell!
+        else if let message = messages[indexPath.row] as? ImageMessageModel {
+            if message.condition == .send {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "sendImageCell", for: indexPath) as? ChatImageSendCell
+                cell!.date = message.date
+                if let status = message.status {
+                    cell!.status = "\(status)"
+                }
+                
+                cell!.sendImageView.image = message.image
+                cell!.hasAvatar = message.avatar
+                
+                return cell!
+            }
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "receiveImageCell", for: indexPath) as? ChatImageReceiveCell
+                cell!.date = message.date
+                cell!.receiveImageView.image = message.image
+                cell!.hasAvatar = message.avatar
+                return cell!
+            }
+
         }
+        
+        let cell = tableView.dequeueReusableCell(withIdentifier: "receiveTextCell", for: indexPath) as? ChatTextReceiveCell
+        return cell!
+        
+    }
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return UITableView.automaticDimension
     }
 }
 extension ChatViewContoller:UITextViewDelegate{

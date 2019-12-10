@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatReceiveCell: ChatCell {
+class ChatTextReceiveCell: ChatCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)

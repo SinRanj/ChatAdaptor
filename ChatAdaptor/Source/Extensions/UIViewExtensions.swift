@@ -119,7 +119,7 @@ extension UIView {
         
     }
     
-    func constraintWithCustomMargin(view:UIView, left:CGFloat, leftRelation:NSLayoutConstraint.Relation = .equal, right:CGFloat, rightRelation:NSLayoutConstraint.Relation = .equal,top:CGFloat,topRelation:NSLayoutConstraint.Relation = .equal, bottom:CGFloat,bottomRelation:NSLayoutConstraint.Relation = .equal, leftView:UIView?=nil, rightView:UIView?=nil){
+    func constraintWithCustomMargin(view:UIView, left:CGFloat, leftRelation:NSLayoutConstraint.Relation = .equal, right:CGFloat, rightRelation:NSLayoutConstraint.Relation = .equal,top:CGFloat,topRelation:NSLayoutConstraint.Relation = .equal, bottom:CGFloat,bottomRelation:NSLayoutConstraint.Relation = .equal, leftView:UIView?=nil, rightView:UIView?=nil, width:CGFloat?=nil){
         
         view.translatesAutoresizingMaskIntoConstraints = false
         
@@ -131,6 +131,10 @@ extension UIView {
             bottom.identifier = "\(identifier) bottomConst"
         }
         
+        if width != nil {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: width!).isActive = true
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: width!).isActive = true
+        }
         if let leftView = leftView {
             NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: leftRelation, toItem: leftView, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: left).isActive = true
         }
@@ -145,8 +149,6 @@ extension UIView {
             NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: rightRelation, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: right).isActive = true
             NSLayoutConstraint.activate([bottom])
         }
-
-        
     }
     
     func constraintWithLeadingAndTrailing(view:UIView, left:CGFloat, right:CGFloat,top:CGFloat,topActive:Bool=true, bottom:CGFloat, secondView:UIView ){

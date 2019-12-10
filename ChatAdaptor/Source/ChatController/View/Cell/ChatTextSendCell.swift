@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ChatSendCell: ChatCell {
+class ChatTextSendCell: ChatCell {
 
     let statusLabel = UILabel()
     
