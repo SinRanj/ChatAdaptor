@@ -31,7 +31,7 @@ extension UIView {
     func constraintBottomWithCustomHeight(view:UIView,heightConst:CGFloat){
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        let bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -view.bottomPadding)
         bottom.identifier = "bottomConst"
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: 0).isActive = true
@@ -206,5 +206,19 @@ extension UIView {
             }
         }
 
+    }
+    
+    var hasTopNotch: Bool {
+        if #available(iOS 11.0, *) {
+            return UIApplication.shared.delegate?.window??.safeAreaInsets.top ?? 0 > 20
+        }
+        return false
+    }
+    var bottomPadding:CGFloat {
+        if #available(iOS 11.0, *) {
+            guard let bottomPadding = UIApplication.shared.windows.first?.safeAreaInsets.bottom else { return 0 }
+            return bottomPadding
+        }
+        return 0
     }
 }
