@@ -11,6 +11,7 @@ import UIKit
 class ChatViewContoller: UIViewController {
     private var table : UITableView!
     private var chatViewHolder:UIView!
+    private var replyView:ReplyView!
     
     private var oldTextViewSize:CGSize = CGSize(width: 0, height: 30)
     private var originalChatViewHolderHeightConst:CGFloat!
@@ -25,6 +26,7 @@ class ChatViewContoller: UIViewController {
     private var spotlight:SpotlightView!
     private var keyboardIsVisible = false
     var messages: Array<MessageModel> = []
+    
     
     override func viewDidLoad() {
         initializer()
@@ -71,6 +73,7 @@ class ChatViewContoller: UIViewController {
     }
     
     private func chatViewConfigurations(){
+        chatViewHolder.backgroundColor = UIColor.white
         textView = UITextView(frame: CGRect.zero)
         textView.delegate = self
         textView.text = "Message..."
@@ -83,19 +86,57 @@ class ChatViewContoller: UIViewController {
         
         chatViewHolder.addSubview(textView)
         chatViewHolder.addSubview(sendButton)
-        
+        chatViewHolder.identifier = "chatViewHolder"
         chatViewHolder.constraintWithCustomWidthAndHeight(view: sendButton, width: 60, height: 60)
         chatViewHolder.constraintLeftWithAnotherView(view: textView, rightView: sendButton)
         view.constraintBottomWithCustomHeight(view: chatViewHolder, heightConst: chatViewHolderHeight)
-        chatViewHolderBottomConst = view.constraintFinder(identifier: "bottomConst")
+        chatViewHolderBottomConst = view.constraintFinder(identifier: "chatViewHolder bottomConst")
 
         chatViewHolderHeightConst = chatViewHolder.constraintFinder(identifier: "heightConst")
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
-    
-    func layouts(){
+    private func addReplyView(){
+        replyView = ReplyView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0), closeAction: {
+            DispatchQueue.main.async {
+                self.closeReplyView()
+            }
+        })
+        view.addSubview(replyView)
+        view.bringSubviewToFront(chatViewHolder)
+        replyView.identifier = "replyView"
+        replyViewConfigurations()
+    }
+    private func replyViewConfigurations(){
+        view.constraintBottomWithCustomHeight(view: replyView, heightConst: 60,secondView: chatViewHolder)
+        self.view.layoutIfNeeded()
+        let bottomConst = view.constraintFinder(identifier: "replyView bottomConst")
+        if let bottomConst = bottomConst {
+            UIView.animate(withDuration: 0.2) {
+                bottomConst.constant = 0
+                self.view.layoutIfNeeded()
+                self.chatViewHolder.removeLine()
+            }
+        }
+    }
+    @objc func closeReplyView(){
+        let bottomConst = view.constraintFinder(identifier: "replyView bottomConst")
+        if let bottomConst = bottomConst {
+            UIView.animate(withDuration: 0.2, animations: {
+                bottomConst.constant = 60
+                self.view.layoutIfNeeded()
+                self.chatViewHolder.removeLine()
+            }) { (_) in
+                self.view.layoutIfNeeded()
+                self.replyView.removeFromSuperview()
+            }
+        }
+    }
+    func layouts(shouldDraw:Bool=true){
         chatViewHolder.removeLine()
-        chatViewHolder.drawLine(fromPoint: CGPoint(x: 0, y: 0), toPoint: CGPoint(x: UIScreen.main.bounds.size.width, y: 0))
+        if shouldDraw {
+            chatViewHolder.drawLine(fromPoint: CGPoint(x: 0, y: 0), toPoint: CGPoint(x: UIScreen.main.bounds.size.width, y: 0))
+        }
+        
     }
     deinit {
         NotificationCenter.default.removeObserver(self)
@@ -194,6 +235,9 @@ extension ChatViewContoller:SpotlightDelegate{
             messages.remove(at: indexPath.row)
             table.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             table.endUpdates()
+        }
+        else if action == .reply {
+            addReplyView()
         }
     }
 

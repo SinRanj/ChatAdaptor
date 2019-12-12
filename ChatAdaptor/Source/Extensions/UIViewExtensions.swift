@@ -28,14 +28,21 @@ extension UIView {
         
     }
     
-    func constraintBottomWithCustomHeight(view:UIView,heightConst:CGFloat){
+    func constraintBottomWithCustomHeight(view:UIView,heightConst:CGFloat, secondView:UIView?=nil){
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        let bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -view.bottomPadding)
-        bottom.identifier = "bottomConst"
+        var bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -view.bottomPadding)
+        if let secondView = secondView {
+            bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: heightConst)
+        }
+        if let identifier = view.identifier {
+            bottom.identifier = "\(identifier) bottomConst"
+        }
         
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: 0).isActive = true
         
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: 0).isActive = true
+        
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: 0).isActive = true
         
         let height = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: heightConst)
         height.identifier = "heightConst"
@@ -51,6 +58,27 @@ extension UIView {
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: 0).isActive = true
         
+    }
+    func constraintCustom(view:UIView,leftConst:CGFloat?=nil,rightConst:CGFloat?=nil,bottomConst:CGFloat?=nil,topConst:CGFloat?=nil,widthConst:CGFloat?=nil,heightConst:CGFloat?=nil){
+        view.translatesAutoresizingMaskIntoConstraints = false
+        if let leftConst = leftConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: leftConst).isActive = true
+        }
+        if let rightConst = rightConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: rightConst).isActive = true
+        }
+        if let topConst = topConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: topConst).isActive = true
+        }
+        if let bottomConst = bottomConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: bottomConst).isActive = true
+        }
+        if let widthConst = widthConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: widthConst).isActive = true
+        }
+        if let heightConst = heightConst {
+            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: heightConst).isActive = true
+        }
     }
     func constraintLeftWithAnotherView(view:UIView,rightView:UIView,margin:CGFloat = 8){
         view.translatesAutoresizingMaskIntoConstraints = false
