@@ -9,6 +9,10 @@
 import Foundation
 import UIKit
 
+
+protocol SpotlightDelegate:AnyObject{
+    func didSelectItem(action:messageAction, indexPath:IndexPath)
+}
 class SpotlightView: UIView {
     private var fillLayer = CAShapeLayer()
     private var path : UIBezierPath!
@@ -19,6 +23,11 @@ class SpotlightView: UIView {
     private var menu:ChatMenu!
     private var menuFrame:CGRect!
     
+    private var actionItems = [messageAction]()
+    private var indexPath:IndexPath!
+    
+    weak var delegate:SpotlightDelegate?
+    
     init(view:UIView) {
         super.init(frame: view.frame)
         let rootViewController = UIApplication.shared.windows.first
@@ -26,17 +35,21 @@ class SpotlightView: UIView {
         resetLayers()
         self.isUserInteractionEnabled = true
         tapGesture = UITapGestureRecognizer(target: self, action: #selector(didTapView))
-        parentView.addGestureRecognizer(tapGesture)
+        self.addGestureRecognizer(tapGesture)
     }
     
-    func addSpotlightToView(cell:ChatCell,rect:CGRect){
+    func addSpotlightToView(cell:ChatCell,rect:CGRect,messageActions:[messageAction], indexPath:IndexPath){
         resetLayers()
         parentView.layer.addSublayer(fillLayer)
         parentView.addSubview(self)
         var items = [ChatMenuItem]()
-        items.append(ChatMenuItem(title: "Edit"))
-        items.append(ChatMenuItem(title: "Reply"))
-        items.append(ChatMenuItem(title: "Delete"))
+        
+        actionItems = messageActions
+        self.indexPath = indexPath
+        
+        for i in messageActions {
+            items.append(ChatMenuItem(title: i.rawValue))
+        }
         let height:CGFloat = (CGFloat(items.count*40))
         
         if rect.origin.y >= height+40.0 {
@@ -58,6 +71,7 @@ class SpotlightView: UIView {
         }
 
         menu = ChatMenu(frame: menuFrame, items: items)
+        menu.delegate = self
         menu.show()
         
         let j = parentView.convert(cell.bubleView.frame, from: cell.bubleView.superview!)
@@ -95,7 +109,10 @@ class SpotlightView: UIView {
         
         fillLayer.removeAnimation(forKey: "appear")
         fillLayer.add(dissapearAnimation, forKey: "dissapear")
-        menu.show()
+        if menu != nil {
+            menu.show()
+        }
+        
 //        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
 //            self.fillLayer.removeAnimation(forKey: "dissapear")
 //            self.fillLayer.removeFromSuperlayer()
@@ -108,10 +125,22 @@ class SpotlightView: UIView {
         CATransaction.setCompletionBlock({
             self.fillLayer.removeAnimation(forKey: "dissapear")
             self.fillLayer.removeFromSuperlayer()
-            self.gestureRecognizers?.removeAll()
             self.removeFromSuperview()
             self.isApear = false
-            self.menu.removeFromSuperview()
+            if self.menu != nil {
+                self.menu.removeFromSuperview()
+            }
         })
     }
+}
+
+extension SpotlightView:ChatMenuDelegate{
+    func didSelectItem(index: Int, title: String) {
+        didTapView()
+        DispatchQueue.main.asyncAfter(deadline: DispatchTime.now()+0.2) {
+            self.delegate?.didSelectItem(action: self.actionItems[index], indexPath: self.indexPath)
+        }
+        
+    }
+    
 }

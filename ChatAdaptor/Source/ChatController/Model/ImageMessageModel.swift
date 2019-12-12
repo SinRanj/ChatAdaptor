@@ -12,6 +12,7 @@ import UIKit
 
 struct ImageMessageModel: MessageModel {
     
+    
     var condition: messageCondition!
     
     var date: String?
@@ -21,5 +22,17 @@ struct ImageMessageModel: MessageModel {
     var avatar: UIImage?
     
     var image: UIImage!
-    
+ 
+    func actionsForType()->[messageAction] {
+        var actions = [messageAction]()
+        if condition == .send {
+            actions.append(messageAction.reply)
+            actions.append(messageAction.delete)
+        }
+        else if condition == .receive {
+            actions.append(messageAction.reply)
+            actions.append(messageAction.delete)
+        }
+        return actions
+    }
 }

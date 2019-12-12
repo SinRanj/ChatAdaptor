@@ -177,7 +177,8 @@ class ChatViewContoller: UIViewController {
         guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
         
         let rectOfCellInSuperview = self.table.convert(rectOfCellInTableView, to: self.table.superview)
-        self.spotlight.addSpotlightToView(cell: cell,rect: rectOfCellInSuperview)
+        self.spotlight.delegate = self
+        self.spotlight.addSpotlightToView(cell: cell,rect: rectOfCellInSuperview,messageActions: messages[indexPath.row].actionsForType(), indexPath: indexPath)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
@@ -185,6 +186,18 @@ class ChatViewContoller: UIViewController {
     }
 }
 
+extension ChatViewContoller:SpotlightDelegate{
+    
+    func didSelectItem(action: messageAction, indexPath: IndexPath) {
+        if action == .delete {
+            table.beginUpdates()
+            messages.remove(at: indexPath.row)
+            table.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
+            table.endUpdates()
+        }
+    }
+
+}
 
 extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -196,6 +209,7 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
             if message.condition == .send {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sendTextCell", for: indexPath) as? ChatTextSendCell
                 cell!.date = message.date
+                
                 if let status = message.status {
                     cell!.status = "\(status)"
                 }

@@ -100,7 +100,6 @@ class ChatMenu:UIView,UITableViewDataSource,UITableViewDelegate {
             self.alpha = 1
         }) { (success) in
             self.state = .open
-            print("")
         }
     }
     
@@ -161,5 +160,6 @@ class ChatMenu:UIView,UITableViewDataSource,UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         self.delegate?.didSelectItem(index: indexPath.row, title: _items[indexPath.row].title)
     }
+    
 }
 

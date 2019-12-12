@@ -19,14 +19,30 @@ enum messageStatus:String {
     case receive = "receive"
     case seen = "seen"
 }
+enum messageAction:String{
+    case edit
+    case delete
+    case reply
+    var rawValue: String {
+        switch self {
+        case .edit: return "Edit"
+        case .delete: return "Delete"
+        case .reply: return "Reply"
+        }
+    }
+}
 protocol MessageModel {
     
     var condition:messageCondition! {get set}
     var date:String? {get set}
     var status:messageStatus? {get set}
     var avatar:UIImage?{get set}
+    
+    func actionsForType()->[messageAction]
 }
 extension MessageModel {
+    
+
     func mockData()-> Array<MessageModel>{
         var messages:Array<MessageModel> = []
         messages.append(TextMessageModel(condition: messageCondition.receive, date: nil, status: nil, text: "Lorem ipsum", avatar: UIImage(named: "rick-avatar")))
