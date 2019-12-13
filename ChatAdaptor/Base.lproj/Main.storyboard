@@ -14,7 +14,30 @@
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="3iA-02-euF">
+                                <rect key="frame" x="348" y="44" width="46" height="30"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="46" id="At0-9Q-Ux5"/>
+                                    <constraint firstAttribute="height" constant="30" id="Ied-cy-SzT"/>
+                                </constraints>
+                                <state key="normal" title="Button"/>
+                            </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="nb8-Op-bpu">
+                                <rect key="frame" x="8" y="52" width="332" height="21"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="3iA-02-euF" firstAttribute="leading" secondItem="nb8-Op-bpu" secondAttribute="trailing" constant="8" id="7F3-Jj-ajm"/>
+                            <constraint firstItem="3iA-02-euF" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" id="Ovx-BL-R4H"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="3iA-02-euF" secondAttribute="trailing" constant="20" id="PQi-Md-hTZ"/>
+                            <constraint firstItem="nb8-Op-bpu" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="8" id="dul-qX-Pk2"/>
+                            <constraint firstItem="nb8-Op-bpu" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="8" id="uoI-DB-3Vb"/>
+                        </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>

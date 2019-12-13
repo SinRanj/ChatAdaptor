@@ -59,19 +59,19 @@ extension UIView {
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: 0).isActive = true
         
     }
-    func constraintCustom(view:UIView,leftConst:CGFloat?=nil,rightConst:CGFloat?=nil,bottomConst:CGFloat?=nil,topConst:CGFloat?=nil,widthConst:CGFloat?=nil,heightConst:CGFloat?=nil){
+    func constraintCustom(view:UIView,leftConst:CGFloat?=nil, leftView:UIView?=nil,leftViewAttribute:NSLayoutConstraint.Attribute = .left,leftSelfAttribute:NSLayoutConstraint.Attribute = .left,rightConst:CGFloat?=nil,rightView:UIView?=nil,rightViewAttribute:NSLayoutConstraint.Attribute = .right,rightSelfAttribute:NSLayoutConstraint.Attribute = .right,bottomConst:CGFloat?=nil,bottomView:UIView?=nil,bottomViewAttribute:NSLayoutConstraint.Attribute = .bottom,bottomSelfAttribute:NSLayoutConstraint.Attribute = .bottom,topConst:CGFloat?=nil,topView:UIView?=nil,topViewAttribute:NSLayoutConstraint.Attribute = .top,topSelfAttribute:NSLayoutConstraint.Attribute = .top,widthConst:CGFloat?=nil,heightConst:CGFloat?=nil){
         view.translatesAutoresizingMaskIntoConstraints = false
         if let leftConst = leftConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: leftConst).isActive = true
+            NSLayoutConstraint(item: view, attribute: leftSelfAttribute, relatedBy: NSLayoutConstraint.Relation.equal, toItem: leftView ?? self, attribute: leftViewAttribute, multiplier: 1, constant: leftConst).isActive = true
         }
         if let rightConst = rightConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: rightConst).isActive = true
+            NSLayoutConstraint(item: view, attribute: rightSelfAttribute, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView ?? self, attribute: rightViewAttribute, multiplier: 1, constant: rightConst).isActive = true
         }
         if let topConst = topConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: topConst).isActive = true
+            NSLayoutConstraint(item: view, attribute: topSelfAttribute, relatedBy: NSLayoutConstraint.Relation.equal, toItem: topView ?? self, attribute: topViewAttribute, multiplier: 1, constant: topConst).isActive = true
         }
         if let bottomConst = bottomConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: bottomConst).isActive = true
+            NSLayoutConstraint(item: view, attribute: bottomSelfAttribute, relatedBy: NSLayoutConstraint.Relation.equal, toItem: bottomView ?? self, attribute: bottomViewAttribute, multiplier: 1, constant: bottomConst).isActive = true
         }
         if let widthConst = widthConst {
             NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: widthConst).isActive = true

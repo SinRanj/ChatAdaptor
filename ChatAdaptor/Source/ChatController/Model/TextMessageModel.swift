@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 
 struct TextMessageModel:MessageModel {
+    
     var condition: messageCondition!
     
     var date: String?
@@ -20,6 +21,7 @@ struct TextMessageModel:MessageModel {
     
     var avatar: UIImage?
     
+    var name: String!
     func actionsForType() -> [messageAction] {
         var actions = [messageAction]()
         if condition == .send {

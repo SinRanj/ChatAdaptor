@@ -23,6 +23,7 @@
 		27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */; };
 		27DF14A5239E5A6E00C1F465 /* ChatMenuView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A4239E5A6E00C1F465 /* ChatMenuView.swift */; };
 		27E3A53223A21C7600679454 /* ReplyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27E3A53123A21C7600679454 /* ReplyView.swift */; };
+		27EC61BA23A371AF0077AE64 /* ChatConfigurations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27EC61B923A371AF0077AE64 /* ChatConfigurations.swift */; };
 		27FEA3AD239F87AB00ECB6CF /* ImageMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FEA3AC239F87AB00ECB6CF /* ImageMessageModel.swift */; };
 		27FEA3AF239F902B00ECB6CF /* ChatImageReceiveCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FEA3AE239F902B00ECB6CF /* ChatImageReceiveCell.swift */; };
 		27FEA3B1239FA71000ECB6CF /* ChatImageSendCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27FEA3B0239FA71000ECB6CF /* ChatImageSendCell.swift */; };
@@ -47,6 +48,7 @@
 		27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightView.swift; sourceTree = "<group>"; };
 		27DF14A4239E5A6E00C1F465 /* ChatMenuView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatMenuView.swift; sourceTree = "<group>"; };
 		27E3A53123A21C7600679454 /* ReplyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplyView.swift; sourceTree = "<group>"; };
+		27EC61B923A371AF0077AE64 /* ChatConfigurations.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatConfigurations.swift; sourceTree = "<group>"; };
 		27FEA3AC239F87AB00ECB6CF /* ImageMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMessageModel.swift; sourceTree = "<group>"; };
 		27FEA3AE239F902B00ECB6CF /* ChatImageReceiveCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageReceiveCell.swift; sourceTree = "<group>"; };
 		27FEA3B0239FA71000ECB6CF /* ChatImageSendCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatImageSendCell.swift; sourceTree = "<group>"; };
@@ -137,6 +139,7 @@
 				27B548B5239A3710008477FA /* MessageModel.swift */,
 				27B548B7239A39BA008477FA /* TextMessageModel.swift */,
 				27FEA3AC239F87AB00ECB6CF /* ImageMessageModel.swift */,
+				27EC61B923A371AF0077AE64 /* ChatConfigurations.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -260,6 +263,7 @@
 				27B548B6239A3710008477FA /* MessageModel.swift in Sources */,
 				27FEA3AD239F87AB00ECB6CF /* ImageMessageModel.swift in Sources */,
 				2710D25423979C0E0051530F /* ChatTextSendCell.swift in Sources */,
+				27EC61BA23A371AF0077AE64 /* ChatConfigurations.swift in Sources */,
 				27FEA3B1239FA71000ECB6CF /* ChatImageSendCell.swift in Sources */,
 				279FF6E82396946D00E333F8 /* AppDelegate.swift in Sources */,
 				279FF6FF2396948600E333F8 /* ChatViewController.swift in Sources */,

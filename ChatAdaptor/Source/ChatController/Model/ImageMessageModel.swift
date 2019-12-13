@@ -23,6 +23,8 @@ struct ImageMessageModel: MessageModel {
     
     var image: UIImage!
  
+    var name:String!
+    
     func actionsForType()->[messageAction] {
         var actions = [messageAction]()
         if condition == .send {

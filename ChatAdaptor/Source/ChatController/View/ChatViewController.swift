@@ -27,7 +27,6 @@ class ChatViewContoller: UIViewController {
     private var keyboardIsVisible = false
     var messages: Array<MessageModel> = []
     
-    
     override func viewDidLoad() {
         initializer()
         mockDataGenerator()
@@ -73,8 +72,10 @@ class ChatViewContoller: UIViewController {
     }
     
     private func chatViewConfigurations(){
-        chatViewHolder.backgroundColor = UIColor.white
+        chatViewHolder.backgroundColor = ChatConfigurations.Colors.sharedInstance.chatViewHolderBackGroundColor
         textView = UITextView(frame: CGRect.zero)
+        textView.backgroundColor = ChatConfigurations.Colors.sharedInstance.chatViewHolderBackGroundColor
+        
         textView.delegate = self
         textView.text = "Message..."
         textView.textColor = UIColor.lightGray
@@ -96,6 +97,9 @@ class ChatViewContoller: UIViewController {
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
     private func addReplyView(){
+        if replyView != nil {
+            return
+        }
         replyView = ReplyView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0), closeAction: {
             DispatchQueue.main.async {
                 self.closeReplyView()
@@ -128,6 +132,7 @@ class ChatViewContoller: UIViewController {
             }) { (_) in
                 self.view.layoutIfNeeded()
                 self.replyView.removeFromSuperview()
+                self.replyView = nil
             }
         }
     }
