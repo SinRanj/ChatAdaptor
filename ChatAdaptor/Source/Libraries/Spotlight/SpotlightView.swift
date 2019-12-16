@@ -26,6 +26,10 @@ class SpotlightView: UIView {
     private var actionItems = [messageAction]()
     private var indexPath:IndexPath!
     
+    private var messageViewImage:UIImageView!
+    private var bubbleViewImage:UIImageView!
+    private var dateLabelViewImage:UIImageView!
+    
     weak var delegate:SpotlightDelegate?
     
     init(view:UIView) {
@@ -74,8 +78,40 @@ class SpotlightView: UIView {
         menu.delegate = self
         menu.show()
         
-        let j = parentView.convert(cell.bubleView.frame, from: cell.bubleView.superview!)
-        let spotlightPath = UIBezierPath(roundedRect: CGRect(x: j.origin.x, y: j.origin.y, width: cell.bubleView.frame.width, height: cell.bubleView.frame.height), cornerRadius: 8)
+        let bubbleImage = cell.bubleView.asImage()
+        let bubbleFrame = parentView.convert(cell.bubleView.frame, from: cell.bubleView.superview!)
+        bubbleViewImage = UIImageView(frame: bubbleFrame)
+        bubbleViewImage.image = bubbleImage
+        
+        let dateImage = cell.dateLabel.asImage()
+        let dateFrame = parentView.convert(cell.dateLabel.frame, from: cell.dateLabel.superview!)
+        dateLabelViewImage = UIImageView(frame: dateFrame)
+        dateLabelViewImage.image = dateImage
+        
+        if cell is ChatTextSendCell || cell is ChatTextReceiveCell{
+            let messageImage = cell.messageLabel.asImage()
+            let messageFrame = parentView.convert(cell.messageLabel.frame, from: cell.messageLabel.superview!)
+            messageViewImage = UIImageView(frame: messageFrame)
+            messageViewImage.image = messageImage
+        }
+        else if let c = cell as? ChatImageSendCell  {
+            let messageImage = c.cellImageView.asImage()
+            let messageFrame = parentView.convert(c.cellImageView.frame, from: c.cellImageView.superview!)
+            messageViewImage = UIImageView(frame: messageFrame)
+            messageViewImage.image = messageImage
+        }
+        else if let c = cell as? ChatImageReceiveCell {
+            let messageImage = c.cellImageView.asImage()
+            let messageFrame = parentView.convert(c.cellImageView.frame, from: c.cellImageView.superview!)
+            messageViewImage = UIImageView(frame: messageFrame)
+            messageViewImage.image = messageImage
+        }
+        
+        self.addSubview(bubbleViewImage)
+        self.addSubview(messageViewImage)
+        self.addSubview(dateLabelViewImage)
+        
+        let spotlightPath = UIBezierPath(roundedRect: CGRect(x: bubbleFrame.origin.x, y: bubbleFrame.origin.y, width: cell.bubleView.frame.width, height: cell.bubleView.frame.height), cornerRadius: 8)
         
         path.append(spotlightPath)
         fillLayer.path = path.cgPath
@@ -123,6 +159,9 @@ class SpotlightView: UIView {
 //        }
         CATransaction.begin()
         CATransaction.setCompletionBlock({
+            self.bubbleViewImage.removeFromSuperview()
+            self.messageViewImage.removeFromSuperview()
+            self.dateLabelViewImage.removeFromSuperview()
             self.fillLayer.removeAnimation(forKey: "dissapear")
             self.fillLayer.removeFromSuperlayer()
             self.removeFromSuperview()

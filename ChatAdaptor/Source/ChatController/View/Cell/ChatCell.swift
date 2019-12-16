@@ -35,6 +35,7 @@ class ChatCell: UITableViewCell {
             setAvatar()
         }
     }
+    var name:String?
     
     let dateLabel = UILabel()
     let messageLabel = UILabel()

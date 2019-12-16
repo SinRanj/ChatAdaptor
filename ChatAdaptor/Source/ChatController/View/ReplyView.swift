@@ -20,6 +20,16 @@ class ReplyView:UIView{
     private var nameLabel = UILabel()
     private var messageLabel = UILabel()
     
+    var name:String!{
+        didSet{
+            nameLabel.text = name ?? ""
+        }
+    }
+    var message:String!{
+        didSet{
+            messageLabel.text = message
+        }
+    }
     override init(frame: CGRect) {
         super.init(frame: frame)
         initilizer()
@@ -44,10 +54,10 @@ class ReplyView:UIView{
         constraintCustom(view: colorView, bottomConst: 0, topConst: 0, widthConst: 6)
         drawLine(fromPoint: CGPoint(x: 0, y: 0), toPoint: CGPoint(x: UIScreen.main.bounds.size.width, y: 0))
 
-        closeBtn.setTitle("X", for: UIControl.State.normal)
-        closeBtn.setTitleColor(UIColor.black, for: .normal)
+        closeBtn.setImage(UIImage(named: "cancel"), for: UIControl.State.normal)
+        closeBtn.imageView?.contentMode = .scaleAspectFit
         
-        constraintCustom(view: closeBtn, rightConst: -8, topConst: 8, widthConst: 13, heightConst: 13)
+        constraintCustom(view: closeBtn, rightConst: -8, topConst: 8, widthConst: 20, heightConst: 20)
         constraintCustom(view: nameLabel, leftConst: 16 ,leftView: self,rightConst:-8,rightView: closeBtn,rightViewAttribute: .left,topConst: 8)
         constraintCustom(view: messageLabel, leftConst: 16 ,leftView: self,rightConst:-8,rightView: closeBtn,rightViewAttribute: .left,topConst: 3,topView: nameLabel,topViewAttribute: .bottom)
         
@@ -59,6 +69,10 @@ class ReplyView:UIView{
     
     @objc func close(){
         closeAction?()
+    }
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        layouts()
     }
     func layouts(){
         self.removeLine()

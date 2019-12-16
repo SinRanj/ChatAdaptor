@@ -26,6 +26,11 @@ class ChatViewContoller: UIViewController {
     private var spotlight:SpotlightView!
     private var keyboardIsVisible = false
     var messages: Array<MessageModel> = []
+    private var isReplyViewShowing = false
+    
+    private var replyCell:ChatCell?
+    private var messageIndexPath:IndexPath?
+    private var messageAction:messageAction?
     
     override func viewDidLoad() {
         initializer()
@@ -97,15 +102,39 @@ class ChatViewContoller: UIViewController {
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
     private func addReplyView(){
-        if replyView != nil {
-            return
+        if replyView == nil {
+            replyView = ReplyView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0), closeAction: {
+                DispatchQueue.main.async {
+                    self.closeReplyView()
+                }
+            })
+            view.addSubview(replyView)
         }
-        replyView = ReplyView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0), closeAction: {
-            DispatchQueue.main.async {
-                self.closeReplyView()
+        self.sendButton.setImage(nil, for: UIControl.State.normal)
+        self.sendButton.setTitle("Send", for: UIControl.State.normal)
+        
+        isReplyViewShowing = true
+        if let cell = replyCell as? ChatTextReceiveCell {
+            replyView.message = cell.message
+            replyView.name = cell.name
+        }
+        else if let cell = replyCell as? ChatTextSendCell{
+            replyView.message = cell.message
+            replyView.name = "You"
+            if messageAction == .edit{
+                sendButton.setImage(UIImage(named: "checked"), for: UIControl.State.normal)
+                sendButton.imageView?.contentMode = .scaleAspectFit
             }
-        })
-        view.addSubview(replyView)
+            
+        }
+        else if let cell = replyCell as? ChatImageReceiveCell{
+            replyView.message = "🌃 Photo"
+            replyView.name = cell.name
+        }
+        else if let _ = replyCell as? ChatImageSendCell{
+            replyView.message = "🌃 Photo"
+            replyView.name = "You"
+        }
         view.bringSubviewToFront(chatViewHolder)
         replyView.identifier = "replyView"
         replyViewConfigurations()
@@ -123,6 +152,11 @@ class ChatViewContoller: UIViewController {
         }
     }
     @objc func closeReplyView(){
+        messageAction = nil
+        messageIndexPath = nil
+        replyCell = nil
+        self.sendButton.setImage(nil, for: UIControl.State.normal)
+        self.sendButton.setTitle("Send", for: UIControl.State.normal)
         let bottomConst = view.constraintFinder(identifier: "replyView bottomConst")
         if let bottomConst = bottomConst {
             UIView.animate(withDuration: 0.2, animations: {
@@ -133,6 +167,7 @@ class ChatViewContoller: UIViewController {
                 self.view.layoutIfNeeded()
                 self.replyView.removeFromSuperview()
                 self.replyView = nil
+                self.isReplyViewShowing = false
             }
         }
     }
@@ -154,9 +189,21 @@ class ChatViewContoller: UIViewController {
     }
     @objc private func didTapSend(){
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" && textView.textColor != UIColor.lightGray {
-            messages.append(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil))
+            if messageAction != nil {
+                if messageAction == .edit {
+                    let message = messages[messageIndexPath!.row]
+                    table.beginUpdates()
+                    messages[messageIndexPath!.row] = TextMessageModel(condition: message.condition, date: "edited now", status: message.status, text: textView.text, avatar: message.avatar, name: message.name)
+                    table.reloadRows(at: [messageIndexPath!], with: .automatic)
+                    table.endUpdates()
+                    closeReplyView()
+                }
+            }
+            else {
+                messages.append(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil))
+                updateMessages()
+            }
             textView.text = ""
-            updateMessages()
             chatViewHolderHeightConst.constant = originalChatViewHolderHeightConst
         }
     }
@@ -216,32 +263,35 @@ class ChatViewContoller: UIViewController {
     }
     private func showSpotLight(indexPath:IndexPath){
         let rectOfCellInTableView = self.table.rectForRow(at: indexPath)
-        let completelyVisible = table.bounds.contains(rectOfCellInTableView)
-        if !completelyVisible {
-            self.table.scrollToRow(at: indexPath, at: UITableView.ScrollPosition.bottom, animated: false)
-        }
         guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
         
         let rectOfCellInSuperview = self.table.convert(rectOfCellInTableView, to: self.table.superview)
         self.spotlight.delegate = self
+        
         self.spotlight.addSpotlightToView(cell: cell,rect: rectOfCellInSuperview,messageActions: messages[indexPath.row].actionsForType(), indexPath: indexPath)
     }
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-          layouts()
+        layouts(shouldDraw: !isReplyViewShowing)
     }
 }
 
 extension ChatViewContoller:SpotlightDelegate{
     
     func didSelectItem(action: messageAction, indexPath: IndexPath) {
-        if action == .delete {
+        messageAction = action
+        messageIndexPath = indexPath
+        switch action {
+        case .delete:
             table.beginUpdates()
             messages.remove(at: indexPath.row)
             table.deleteRows(at: [indexPath], with: UITableView.RowAnimation.fade)
             table.endUpdates()
-        }
-        else if action == .reply {
+        case .reply:
+            replyCell = table.cellForRow(at: indexPath) as? ChatCell
+            addReplyView()
+        case .edit:
+            replyCell = table.cellForRow(at: indexPath) as? ChatCell
             addReplyView()
         }
     }
@@ -258,7 +308,7 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
             if message.condition == .send {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sendTextCell", for: indexPath) as? ChatTextSendCell
                 cell!.date = message.date
-                
+                cell!.name = message.name
                 if let status = message.status {
                     cell!.status = "\(status)"
                 }
@@ -270,6 +320,7 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "receiveTextCell", for: indexPath) as? ChatTextReceiveCell
                 cell!.date = message.date
+                cell!.name = message.name
                 cell!.message = message.text
                 cell!.hasAvatar = message.avatar
                 return cell!
@@ -279,19 +330,21 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
             if message.condition == .send {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "sendImageCell", for: indexPath) as? ChatImageSendCell
                 cell!.date = message.date
+                cell!.name = message.name
                 if let status = message.status {
                     cell!.status = "\(status)"
                 }
                 
-                cell!.sendImageView.image = message.image
+                cell!.cellImageView.image = message.image
                 cell!.hasAvatar = message.avatar
                 
                 return cell!
             }
             else {
                 let cell = tableView.dequeueReusableCell(withIdentifier: "receiveImageCell", for: indexPath) as? ChatImageReceiveCell
+                cell!.name = message.name
                 cell!.date = message.date
-                cell!.receiveImageView.image = message.image
+                cell!.cellImageView.image = message.image
                 cell!.hasAvatar = message.avatar
                 return cell!
             }
