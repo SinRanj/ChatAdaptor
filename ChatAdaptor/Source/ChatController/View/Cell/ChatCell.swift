@@ -95,6 +95,11 @@ class ChatCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+            
+        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+            self.transform = CGAffineTransform(rotationAngle: (-.pi))
+        }
         bubleView.cornerRadius()
         addSubview(bubleView)
         addSubview(messageLabel)

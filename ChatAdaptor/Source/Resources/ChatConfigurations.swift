@@ -32,5 +32,9 @@ struct ChatConfigurations {
             return colors[random]
         }
     }
+    struct MessageConfigurations {
+        static var sharedInstance = MessageConfigurations()
+        var shouldFlip = true
+    }
     
 }

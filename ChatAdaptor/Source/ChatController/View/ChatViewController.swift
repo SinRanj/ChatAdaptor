@@ -42,6 +42,10 @@ class ChatViewContoller: UIViewController {
     
     private func initializer(){
         table = UITableView(frame: CGRect.zero , style: UITableView.Style.plain)
+        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+            table.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
+            table.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: table.bounds.size.width - 10)
+        }
         chatViewHolder = UIView(frame: CGRect.zero)
         self.view.addSubview(table)
         self.view.addSubview(chatViewHolder)
@@ -60,6 +64,9 @@ class ChatViewContoller: UIViewController {
     func mockDataGenerator(){
         let message = TextMessageModel()
         messages = message.mockData()
+        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+            messages.reverse()
+        }
         table.reloadData()
     }
     
@@ -205,7 +212,12 @@ class ChatViewContoller: UIViewController {
                 }
             }
             else {
-                messages.append(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil))
+                if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+                    messages.insert(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil), at: 0)
+                }
+                else {
+                    messages.append(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil))
+                }
                 updateMessages()
             }
             textView.text = ""

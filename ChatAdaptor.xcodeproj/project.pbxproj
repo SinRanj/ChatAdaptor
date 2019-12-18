@@ -111,6 +111,7 @@
 		279FF6FB2396948600E333F8 /* Source */ = {
 			isa = PBXGroup;
 			children = (
+				27B1D0E223AA5C840098DE94 /* Resources */,
 				27DF14A0239E3F0200C1F465 /* Libraries */,
 				279FF7012396961300E333F8 /* ChatController */,
 				279FF6FD2396948600E333F8 /* Extensions */,
@@ -144,13 +145,20 @@
 			path = Protocols;
 			sourceTree = "<group>";
 		};
+		27B1D0E223AA5C840098DE94 /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				27EC61B923A371AF0077AE64 /* ChatConfigurations.swift */,
+			);
+			path = Resources;
+			sourceTree = "<group>";
+		};
 		27B548B2239A36BC008477FA /* Model */ = {
 			isa = PBXGroup;
 			children = (
 				27B548B5239A3710008477FA /* MessageModel.swift */,
 				27B548B7239A39BA008477FA /* TextMessageModel.swift */,
 				27FEA3AC239F87AB00ECB6CF /* ImageMessageModel.swift */,
-				27EC61B923A371AF0077AE64 /* ChatConfigurations.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";

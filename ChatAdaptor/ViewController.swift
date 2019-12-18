@@ -16,6 +16,7 @@ class ViewController: ChatViewContoller {
         mockDataGenerator()
     }
 }
+
 extension ViewController: ChatControllerDelegates{
     func chatTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let message = messages[indexPath.row] as? TextMessageModel {
