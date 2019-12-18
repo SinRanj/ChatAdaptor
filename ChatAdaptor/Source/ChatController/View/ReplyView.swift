@@ -11,6 +11,7 @@ import UIKit
 
 
 class ReplyView:UIView{
+    
     typealias CloseAction = () -> ()
     
     private var closeBtn = UIButton()

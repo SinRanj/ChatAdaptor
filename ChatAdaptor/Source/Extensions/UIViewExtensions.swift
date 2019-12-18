@@ -119,14 +119,21 @@ extension UIView {
     /// - Parameter view: A view to set constraint for (`view`).
     /// - Parameter rightView: View on the right side of `view`.
     /// - Parameter margin: Margin for constrain default is 8.
-    func constraintLeftWithAnotherView(view:UIView,rightView:UIView,margin:CGFloat = 8){
+    func constraintLeftWithAnotherView(view:UIView,rightView:UIView,margin:CGFloat = 8,leftView:UIView?=nil){
+        var lView = self
+        var attribute = NSLayoutConstraint.Attribute.left
+        if leftView != nil {
+            attribute = NSLayoutConstraint.Attribute.right
+            lView = leftView!
+        }
+        
         view.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: margin).isActive = true
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -margin).isActive = true
         
-        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: margin).isActive = true
+        NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.left, relatedBy: NSLayoutConstraint.Relation.equal, toItem: lView, attribute: attribute, multiplier: 1, constant: margin).isActive = true
         
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: rightView, attribute: NSLayoutConstraint.Attribute.left, multiplier: 1, constant: -margin).isActive = true
     }
@@ -174,10 +181,8 @@ extension UIView {
     /// - Parameter isRight: If view shows on right.
     func constraintWithCustomWidthAndHeight(view:UIView,margin:CGFloat = 8, width:CGFloat, height:CGFloat, isLeft:Bool=false, isRight:Bool=false){
         view.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.top, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: margin).isActive = true
         
-
         
         if !isLeft {
             if isRight {

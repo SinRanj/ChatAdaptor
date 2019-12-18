@@ -19,6 +19,7 @@ class ChatViewContoller: UIViewController {
     var chatViewHolderHeight:CGFloat = 60
     var textView:UITextView!
     var sendButton:UIButton!
+    var attachmentButton:UIButton!
     
     private var chatViewHolderBottomConst:NSLayoutConstraint!
     private var chatViewHolderHeightConst:NSLayoutConstraint!
@@ -102,11 +103,20 @@ class ChatViewContoller: UIViewController {
         sendButton.setTitleColor(UIColor.black, for: .normal)
         sendButton.addTarget(self, action: #selector(didTapSend), for: UIControl.Event.touchUpInside)
         
+        attachmentButton = UIButton(frame: CGRect.zero)
+        attachmentButton.setImage(UIImage(named: "attachment"), for: UIControl.State.normal)
+        attachmentButton.imageView?.contentMode = .scaleAspectFit
+        attachmentButton.setTitleColor(UIColor.black, for: .normal)
+        
         chatViewHolder.addSubview(textView)
         chatViewHolder.addSubview(sendButton)
+        chatViewHolder.addSubview(attachmentButton)
+        
         chatViewHolder.identifier = "chatViewHolder"
+        chatViewHolder.constraintCustom(view: attachmentButton,leftConst: 8,bottomConst: -8, topConst: 0,widthConst: 30)
+        
         chatViewHolder.constraintWithCustomWidthAndHeight(view: sendButton, width: 60, height: 60)
-        chatViewHolder.constraintLeftWithAnotherView(view: textView, rightView: sendButton)
+        chatViewHolder.constraintLeftWithAnotherView(view: textView, rightView: sendButton,leftView: attachmentButton)
         view.constraintBottomWithCustomHeight(view: chatViewHolder, heightConst: chatViewHolderHeight)
         chatViewHolderBottomConst = view.constraintFinder(identifier: "chatViewHolder bottomConst")
 
@@ -196,7 +206,13 @@ class ChatViewContoller: UIViewController {
     
     private func updateMessages(){
         table.reloadData()
-        table.scrollToRow(at: IndexPath(row: messages.count-1, section: 0), at: UITableView.ScrollPosition.bottom, animated: true)
+        var position = UITableView.ScrollPosition.bottom
+        var row = messages.count-1
+        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+            position = UITableView.ScrollPosition.top
+            row = 0
+        }
+        table.scrollToRow(at: IndexPath(row: row , section: 0), at: position, animated: true)
         
     }
     @objc private func didTapSend(){
