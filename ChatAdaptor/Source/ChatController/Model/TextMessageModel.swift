@@ -11,24 +11,25 @@ import UIKit
 
 struct TextMessageModel:MessageModel {
     
-    //    Condition of message(Send or receive)
+    /// Condition of message(Send or receive)
     var condition: messageCondition!
     
-    //    Date of message which shows in bottom right of bubble message.
+    /// Date of message which shows in bottom right of bubble message.
     var date: String?
     
-    //    Status of message(sending, send, receive, seen)
+    /// Status of message(sending, send, receive, seen)
     var status: messageStatus?
     
-    //    Send or received text.
+    /// Send or received text.
     var text:String!
     
-    //    Avatar image of user
+    /// Avatar image of user
     var avatar: UIImage?
     
-    //    Name or username of user.
+    /// Name or username of user.
     var name: String!
-    //    Functionality of action(Edit, reply, delete).
+    
+    /// Functionality of action(Edit, reply, delete).
     func actionsForType() -> [messageAction] {
         var actions = [messageAction]()
         if condition == .send {

@@ -18,6 +18,7 @@
 		279FF6F42396947000E333F8 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 279FF6F22396947000E333F8 /* LaunchScreen.storyboard */; };
 		279FF6FF2396948600E333F8 /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279FF6FC2396948600E333F8 /* ChatViewController.swift */; };
 		279FF7002396948600E333F8 /* UIViewExtensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = 279FF6FE2396948600E333F8 /* UIViewExtensions.swift */; };
+		27B1D0E123AA26650098DE94 /* ChatControllerProtocols.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B1D0E023AA26650098DE94 /* ChatControllerProtocols.swift */; };
 		27B548B6239A3710008477FA /* MessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B5239A3710008477FA /* MessageModel.swift */; };
 		27B548B8239A39BA008477FA /* TextMessageModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27B548B7239A39BA008477FA /* TextMessageModel.swift */; };
 		27DF14A3239E3F1E00C1F465 /* SpotlightView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */; };
@@ -43,6 +44,7 @@
 		279FF6F52396947000E333F8 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		279FF6FC2396948600E333F8 /* ChatViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		279FF6FE2396948600E333F8 /* UIViewExtensions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UIViewExtensions.swift; sourceTree = "<group>"; };
+		27B1D0E023AA26650098DE94 /* ChatControllerProtocols.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatControllerProtocols.swift; sourceTree = "<group>"; };
 		27B548B5239A3710008477FA /* MessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageModel.swift; sourceTree = "<group>"; };
 		27B548B7239A39BA008477FA /* TextMessageModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TextMessageModel.swift; sourceTree = "<group>"; };
 		27DF14A2239E3F1E00C1F465 /* SpotlightView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SpotlightView.swift; sourceTree = "<group>"; };
@@ -127,10 +129,19 @@
 		279FF7012396961300E333F8 /* ChatController */ = {
 			isa = PBXGroup;
 			children = (
+				27B1D0DF23AA26520098DE94 /* Protocols */,
 				27B548B2239A36BC008477FA /* Model */,
 				2710D24D23978D4B0051530F /* View */,
 			);
 			path = ChatController;
+			sourceTree = "<group>";
+		};
+		27B1D0DF23AA26520098DE94 /* Protocols */ = {
+			isa = PBXGroup;
+			children = (
+				27B1D0E023AA26650098DE94 /* ChatControllerProtocols.swift */,
+			);
+			path = Protocols;
 			sourceTree = "<group>";
 		};
 		27B548B2239A36BC008477FA /* Model */ = {
@@ -269,6 +280,7 @@
 				279FF6FF2396948600E333F8 /* ChatViewController.swift in Sources */,
 				279FF6EA2396946D00E333F8 /* SceneDelegate.swift in Sources */,
 				2710D24F23978D5E0051530F /* ChatTextReceiveCell.swift in Sources */,
+				27B1D0E123AA26650098DE94 /* ChatControllerProtocols.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
