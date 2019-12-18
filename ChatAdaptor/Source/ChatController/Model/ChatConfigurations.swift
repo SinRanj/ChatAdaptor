@@ -25,6 +25,8 @@ struct ChatConfigurations {
              UIColor(red: 46/255, green: 94/255, blue: 170/255, alpha: 1),
              UIColor(red: 92/255, green: 71/255, blue: 66/255, alpha: 1)
             ]
+        
+//        Return a color randomly from array of colors.
         func randomizeColor()->UIColor{
             let random = Int.random(in: 0..<colors.count)
             return colors[random]

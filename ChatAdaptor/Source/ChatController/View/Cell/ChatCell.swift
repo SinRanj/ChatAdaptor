@@ -9,40 +9,61 @@
 import UIKit
 
 class ChatCell: UITableViewCell {
-
+    
+    /// Bubble view of message.
     let bubleView = UIView()
     
+    /// Date of received or sent message.
     var date:String?{
         didSet{
             didSetDate()
         }
     }
     
+    /// Text message received or sent.
     var message:String?{
         didSet{
             messageLabel.text = message
         }
     }
+    
+    /// Background color for bubble message.
     var bubleViewBackGroundColor:UIColor=UIColor.gray{
         didSet{
             bubleView.backgroundColor = bubleViewBackGroundColor
         }
     }
+    
+    /// Height of avatarView.
     var avatarHeight:CGFloat = 30
     
+    /// Set avatar shows in left or right side of message bubble. The message bubble will move based on it.
     var hasAvatar:UIImage?=nil{
         didSet{
             setAvatar()
         }
     }
+    
+    /// Name or username of user.
     var name:String?
     
+    /// Date label.
     let dateLabel = UILabel()
+    
+    /// Message label.
     let messageLabel = UILabel()
+    
+    /// Avatar View.
     let avatarView = UIImageView()
+    
+    /// Default constraint for borrom of message.
     var messageBottomConst:CGFloat = -20
+    
+    
+    /// Default constraint for borrom of bubble.
     var bubleBottomConst:CGFloat = 8
     
+    /// This function set avatar and move bubble and message based on it.
     private func setAvatar(){
         let widthConst = avatarView.constraintFinder(identifier: "avatarView widthConst")
         if let avatar = hasAvatar {
@@ -55,6 +76,8 @@ class ChatCell: UITableViewCell {
         }
         layoutIfNeeded()
     }
+    
+    /// This function set date of message and move bubble and message based on it
     private func didSetDate(){
         if let date = date {
             dateLabel.text = date

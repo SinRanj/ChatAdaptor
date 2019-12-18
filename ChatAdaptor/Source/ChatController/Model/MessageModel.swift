@@ -9,6 +9,7 @@
 import Foundation
 import UIKit
 
+
 enum messageCondition {
     case send
     case receive
@@ -19,10 +20,12 @@ enum messageStatus:String {
     case receive = "receive"
     case seen = "seen"
 }
+
 enum messageAction:String{
     case edit
     case delete
     case reply
+    
     var rawValue: String {
         switch self {
         case .edit: return "Edit"
@@ -32,17 +35,22 @@ enum messageAction:String{
     }
 }
 protocol MessageModel {
-    
+    //    Condition of message(Send or receive)
     var condition:messageCondition! {get set}
+    //    Date of message which shows in bottom right of bubble message.
     var date:String? {get set}
+    //    Status of message(sending, send, receive, seen)
     var status:messageStatus? {get set}
+    //    Avatar image of user
     var avatar:UIImage?{get set}
+    //    Name or username of user.
     var name:String! {get set}
+    //    Functionality of action(Edit, reply, delete).
     func actionsForType()->[messageAction]
 }
 
 extension MessageModel {
-    
+    //    Create a mock data and return an array of messages.
     func mockData()-> Array<MessageModel>{
         var messages:Array<MessageModel> = []
         messages.append(TextMessageModel(condition: messageCondition.receive, date: nil, status: nil, text: "Lorem ipsum", avatar: UIImage(named: "rick-avatar"), name: "Rick"))

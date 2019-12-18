@@ -10,6 +10,8 @@ import Foundation
 import UIKit
 
 class ChatImageReceiveCell:ChatCell {
+    
+    /// Image view of message.
     var cellImageView = UIImageView()
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

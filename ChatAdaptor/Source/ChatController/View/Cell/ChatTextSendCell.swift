@@ -9,9 +9,11 @@
 import UIKit
 
 class ChatTextSendCell: ChatCell {
-
+    
+    /// Status label of message
     let statusLabel = UILabel()
     
+    /// Status of message.
     var status:String=""{
         didSet{
             didSetStatus()

@@ -10,9 +10,14 @@ import Foundation
 import UIKit
 
 class ChatImageSendCell: ChatCell {
-
+    
+    /// Status label of message.
     let statusLabel = UILabel()
+    
+    /// Image view of message.
     var cellImageView = UIImageView()
+    
+    /// Status of message.
     var status:String=""{
         didSet{
             didSetStatus()
