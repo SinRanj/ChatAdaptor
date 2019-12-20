@@ -57,6 +57,8 @@ struct ChatConfigurations {
         var sendButtonIcon:UIImage? = nil
         
         var attachmentIcon:UIImage! = UIImage(named: "attachment")
+        
+        var downIcon:UIImage! = UIImage(named: "down")
     }
     
     struct Fonts {

@@ -34,6 +34,7 @@ class ChatViewContoller: UIViewController {
     private var messageAction:messageAction?
     private var cells: Array<ChatCell.Type>? = []
     weak var delegate:ChatControllerDelegates?
+    private var scrollButton = UIButton()
     
     var topMargin:CGFloat = 0
     override func viewDidLoad() {
@@ -49,6 +50,7 @@ class ChatViewContoller: UIViewController {
             table.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
             table.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: table.bounds.size.width - 10)
         }
+        
         chatViewHolder = UIView(frame: CGRect.zero)
         self.view.addSubview(table)
         self.view.addSubview(chatViewHolder)
@@ -63,6 +65,15 @@ class ChatViewContoller: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
         cells = delegate?.setCells()
         tableConfigurations()
+        
+        view.addSubview(scrollButton)
+        scrollButton.setImage(ChatConfigurations.Icons.icons.downIcon, for: UIControl.State.normal)
+        
+        scrollButton.alpha = 0.8
+        scrollButton.addTarget(self, action: #selector(scrollToBottom), for: UIControl.Event.touchUpInside)
+        scrollButton.isHidden = true
+        view.constraintCustom(view: scrollButton, rightConst: -20, bottomConst: -80, widthConst: 40, heightConst: 40)
+        
     }
     
     func mockDataGenerator(){
@@ -71,7 +82,7 @@ class ChatViewContoller: UIViewController {
         if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             messages.reverse()
         }
-        table.reloadData()
+        updateMessages()
     }
     
     private func tableConfigurations(){
@@ -185,7 +196,9 @@ class ChatViewContoller: UIViewController {
             }
         }
     }
-    
+    @objc func scrollToBottom(){
+        updateMessages()
+    }
     @objc func closeReplyView(){
         messageAction = nil
         messageIndexPath = nil
@@ -220,7 +233,7 @@ class ChatViewContoller: UIViewController {
         NotificationCenter.default.removeObserver(self)
     }
     
-    private func updateMessages(){
+    func updateMessages(){
         table.reloadData()
         var position = UITableView.ScrollPosition.bottom
         var row = messages.count-1
@@ -387,10 +400,26 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         return delegate?.chatTableView(tableView, cellForRowAt: indexPath) ?? UITableViewCell()
         
     }
     
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        var firstRow = messages.count-1
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
+            firstRow = 0
+        }
+        if let rows = table.indexPathsForVisibleRows {
+            let x = rows.contains(IndexPath(row: firstRow, section: 0))
+            if x {
+                scrollButton.isHidden = true
+            }
+            else {
+                scrollButton.isHidden = false
+            }
+        }
+    }
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
