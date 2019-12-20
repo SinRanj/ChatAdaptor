@@ -30,8 +30,8 @@
             filePath = "ChatAdaptor/Source/Extensions/UIViewExtensions.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "145"
-            endingLineNumber = "145"
+            startingLineNumber = "148"
+            endingLineNumber = "148"
             landmarkName = "UIView"
             landmarkType = "21">
          </BreakpointContent>
@@ -62,8 +62,8 @@
             filePath = "ChatAdaptor/Source/Extensions/UIViewExtensions.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "146"
-            endingLineNumber = "146"
+            startingLineNumber = "149"
+            endingLineNumber = "149"
             landmarkName = "constraintLeftWithAnotherViewNoWidthNoHeight(view:rightView:rightMargin:bottomMargin:)"
             landmarkType = "7">
          </BreakpointContent>

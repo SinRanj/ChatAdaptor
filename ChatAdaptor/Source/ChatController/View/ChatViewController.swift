@@ -13,7 +13,7 @@ class ChatViewContoller: UIViewController {
     private var chatViewHolder:UIView!
     private var replyView:ReplyView!
     
-    private var oldTextViewSize:CGSize = CGSize(width: 0, height: 30)
+    private var oldTextViewSize:CGSize = CGSize(width: 0, height: 30.5)
     private var originalChatViewHolderHeightConst:CGFloat!
     
     var chatViewHolderHeight:CGFloat = 60
@@ -33,8 +33,9 @@ class ChatViewContoller: UIViewController {
     private var messageIndexPath:IndexPath?
     private var messageAction:messageAction?
     private var cells: Array<ChatCell.Type>? = []
-    var delegate:ChatControllerDelegates?
+    weak var delegate:ChatControllerDelegates?
     
+    var topMargin:CGFloat = 0
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -42,6 +43,7 @@ class ChatViewContoller: UIViewController {
     
     func initializer(){
         table = UITableView(frame: CGRect.zero , style: UITableView.Style.plain)
+        
         table.backgroundColor = ChatConfigurations.Colors.colors.chatBackgroundColor
         if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             table.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
@@ -80,7 +82,7 @@ class ChatViewContoller: UIViewController {
         table.delegate = self
         table.dataSource = self
         
-        view.constraintTopWithAnotherView(view: table, bottomView: chatViewHolder)
+        view.constraintCustom(view: table, leftConst: 0, rightConst: 0, bottomConst: 0, bottomView: chatViewHolder, bottomViewAttribute: NSLayoutConstraint.Attribute.top, bottomSelfAttribute: NSLayoutConstraint.Attribute.bottom, topConst: topMargin+view.topPadding)
         for i in cells {
             table.register(i.self, forCellReuseIdentifier: "\(i.self)")
         }
@@ -98,6 +100,7 @@ class ChatViewContoller: UIViewController {
         textView.delegate = self
         textView.text = "Message..."
         textView.textColor = UIColor.lightGray
+        textView.font = ChatConfigurations.Fonts.fonts.messageFont
         
         sendButton = UIButton(frame: CGRect.zero)
         sendButton.setTitle("Send", for: UIControl.State.normal)
@@ -115,11 +118,15 @@ class ChatViewContoller: UIViewController {
         chatViewHolder.addSubview(attachmentButton)
         
         chatViewHolder.identifier = "chatViewHolder"
-        chatViewHolder.constraintCustom(view: attachmentButton,leftConst: 8,bottomConst: -8, topConst: 0,widthConst: 30)
+        chatViewHolder.constraintCustom(view: attachmentButton,leftConst: 8, bottomConst: -11-view.bottomPadding,widthConst: 30,heightConst: 30)
         
-        chatViewHolder.constraintWithCustomWidthAndHeight(view: sendButton, width: 60, height: 60)
-        chatViewHolder.constraintLeftWithAnotherView(view: textView, rightView: sendButton,leftView: attachmentButton)
-        view.constraintBottomWithCustomHeight(view: chatViewHolder, heightConst: chatViewHolderHeight)
+        
+        chatViewHolder.constraintCustom(view: sendButton, rightConst: -8, bottomConst: -11-view.bottomPadding,  widthConst: 60, heightConst: 30)
+        chatViewHolder.constraintCustom(view: textView, leftConst: 8, leftView: attachmentButton, leftViewAttribute: NSLayoutConstraint.Attribute.right, leftSelfAttribute: NSLayoutConstraint.Attribute.left, rightConst: -8, rightView: sendButton, rightViewAttribute: NSLayoutConstraint.Attribute.left, rightSelfAttribute: NSLayoutConstraint.Attribute.right, bottomConst: -8-view.bottomPadding, topConst: 8)
+        
+//        view.constraintBottomWithCustomHeight(view: chatViewHolder, heightConst: chatViewHolderHeight+self.view.bottomPadding)
+        
+        view.constraintCustom(view: chatViewHolder, leftConst: 0, rightConst: 0, bottomConst: 0, heightConst: chatViewHolderHeight+self.view.bottomPadding)
         chatViewHolderBottomConst = view.constraintFinder(identifier: "chatViewHolder bottomConst")
 
         chatViewHolderHeightConst = chatViewHolder.constraintFinder(identifier: "heightConst")
@@ -288,7 +295,8 @@ class ChatViewContoller: UIViewController {
             table.addGestureRecognizer(tapTable)
             keyboardIsVisible = true
             if view.frame.origin.y == 0 {
-                self.view.frame.origin.y -= keyboardSize.height
+                self.view.frame.origin.y -= keyboardSize.height-(self.view.bottomPadding)
+                self.table.layoutIfNeeded()
             }
         }
     }
@@ -396,9 +404,15 @@ extension ChatViewContoller:UITextViewDelegate{
         var newFrame = textView.frame
         newFrame.size = CGSize.init(width: CGFloat(fmaxf(Float(newSize.width), Float(fixedWidth))), height: newSize.height)
         if newFrame.size.height > oldTextViewSize.height {
-            if newFrame.size.height <= 72 {
+            if newFrame.size.height <= 82 {
                 UIView.animate(withDuration: 0.2) {
                     self.chatViewHolderHeightConst.constant += 10
+                    self.view.layoutIfNeeded()
+                }
+            }
+            else {
+                UIView.animate(withDuration: 0.2) {
+                    self.chatViewHolderHeightConst.constant = 80
                     self.view.layoutIfNeeded()
                 }
 

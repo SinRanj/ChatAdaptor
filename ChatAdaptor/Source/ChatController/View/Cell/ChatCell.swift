@@ -108,7 +108,9 @@ class ChatCell: UITableViewCell {
         
         selectionStyle = .none
         messageLabel.numberOfLines = 0
-        dateLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
+        dateLabel.font = UIFont(name: dateLabel.font.fontName, size: ChatConfigurations.Fonts.fonts.messageFont.pointSize-2)
+        messageLabel.font = ChatConfigurations.Fonts.fonts.messageFont
+        
         dateLabel.textAlignment = .right
         dateLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor
         messageLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor

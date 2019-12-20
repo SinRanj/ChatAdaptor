@@ -58,4 +58,9 @@ struct ChatConfigurations {
         
         var attachmentIcon:UIImage! = UIImage(named: "attachment")
     }
+    
+    struct Fonts {
+        static var fonts = Fonts()
+        var messageFont:UIFont = UIFont.systemFont(ofSize: 12)
+    }
 }

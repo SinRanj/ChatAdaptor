@@ -15,6 +15,8 @@ class ViewController: ChatViewContoller {
         delegate = self
         ChatConfigurations.Colors.colors.chatBackgroundColor = UIColor.white
 //        sendDelegate = self
+        chatViewHolderHeight = 50
+//        topMargin = 20
         initializer()
         mockDataGenerator()
     }

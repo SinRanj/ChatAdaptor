@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-@objc protocol ChatControllerDelegates {
+@objc protocol ChatControllerDelegates:AnyObject {
     
     func setCells()->Array<ChatCell.Type>
     

@@ -40,7 +40,8 @@ extension UIView {
     func constraintBottomWithCustomHeight(view:UIView,heightConst:CGFloat, secondView:UIView?=nil){
         view.translatesAutoresizingMaskIntoConstraints = false
         
-        var bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -view.bottomPadding)
+        var bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: 0)
+        
         if let secondView = secondView {
             bottom = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: secondView, attribute: NSLayoutConstraint.Attribute.top, multiplier: 1, constant: heightConst)
         }
@@ -111,7 +112,9 @@ extension UIView {
             NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: widthConst).isActive = true
         }
         if let heightConst = heightConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: heightConst).isActive = true
+            let height = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: heightConst)
+            height.identifier = "heightConst"
+            NSLayoutConstraint.activate([height])
         }
     }
     
@@ -190,7 +193,7 @@ extension UIView {
             }
             else {
                 NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.right, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.right, multiplier: 1, constant: -margin).isActive = true
-                NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -margin).isActive = true
+//                NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.bottom, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self, attribute: NSLayoutConstraint.Attribute.bottom, multiplier: 1, constant: -margin).isActive = true
             }
 
         }
@@ -347,7 +350,15 @@ extension UIView {
         }
         return 0
     }
-
+    
+    var topPadding:CGFloat {
+        if #available(iOS 11.0, *) {
+            guard let topPadding = UIApplication.shared.windows.first?.safeAreaInsets.top else { return 0 }
+            return topPadding
+        }
+        return 0
+    }
+    
     /// This functio save view as UIImage.
     func asImage() -> UIImage {
         if #available(iOS 10.0, *) {
