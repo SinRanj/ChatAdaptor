@@ -72,7 +72,8 @@ class ChatViewContoller: UIViewController {
         scrollButton.alpha = 0.8
         scrollButton.addTarget(self, action: #selector(scrollToBottom), for: UIControl.Event.touchUpInside)
         scrollButton.isHidden = true
-        view.constraintCustom(view: scrollButton, rightConst: -20, bottomConst: -80, widthConst: 40, heightConst: 40)
+        
+        view.constraintCustom(view: scrollButton, rightConst: -20, bottomConst: -20, bottomView: chatViewHolder, bottomViewAttribute: NSLayoutConstraint.Attribute.top, bottomSelfAttribute: NSLayoutConstraint.Attribute.bottom, widthConst: 40, heightConst: 40)
         
     }
     
