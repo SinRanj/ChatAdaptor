@@ -45,13 +45,13 @@ class ReplyView:UIView{
     }
     
     private func initilizer(){
-        backgroundColor = ChatConfigurations.Colors.sharedInstance.chatViewHolderBackGroundColor
+        backgroundColor = ChatConfigurations.Colors.colors.chatViewHolderBackGroundColor
         addSubview(closeBtn)
         addSubview(colorView)
         addSubview(nameLabel)
         addSubview(messageLabel)
         
-        colorView.backgroundColor = ChatConfigurations.Colors.sharedInstance.randomizeColor()
+        colorView.backgroundColor = ChatConfigurations.Colors.colors.randomizeColor()
         constraintCustom(view: colorView, bottomConst: 0, topConst: 0, widthConst: 6)
         drawLine(fromPoint: CGPoint(x: 0, y: 0), toPoint: CGPoint(x: UIScreen.main.bounds.size.width, y: 0))
 

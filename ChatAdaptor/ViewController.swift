@@ -11,8 +11,10 @@ import UIKit
 class ViewController: ChatViewContoller {
 
     override func viewDidLoad() {
-        delegate = self
         super.viewDidLoad()
+        delegate = self
+        ChatConfigurations.Colors.colors.chatBackgroundColor = UIColor.white
+        initializer()
         mockDataGenerator()
     }
 }

@@ -95,9 +95,9 @@ class ChatCell: UITableViewCell {
     
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+        self.backgroundColor = ChatConfigurations.Colors.colors.chatBackgroundColor
             
-        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             self.transform = CGAffineTransform(rotationAngle: (-.pi))
         }
         bubleView.cornerRadius()
@@ -110,8 +110,8 @@ class ChatCell: UITableViewCell {
         messageLabel.numberOfLines = 0
         dateLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
         dateLabel.textAlignment = .right
-        dateLabel.textColor = UIColor.white
-        messageLabel.textColor = UIColor.white
+        dateLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor
+        messageLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor
         messageLabel.adjustsFontSizeToFitWidth = true
     }
 

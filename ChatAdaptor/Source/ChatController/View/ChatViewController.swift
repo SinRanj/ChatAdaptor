@@ -36,14 +36,14 @@ class ChatViewContoller: UIViewController {
     var delegate:ChatControllerDelegates?
     
     override func viewDidLoad() {
-        initializer()
-        cells = delegate?.setCells()
-        tableConfigurations()
+        super.viewDidLoad()
+
     }
     
-    private func initializer(){
+    func initializer(){
         table = UITableView(frame: CGRect.zero , style: UITableView.Style.plain)
-        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+        table.backgroundColor = ChatConfigurations.Colors.colors.chatBackgroundColor
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             table.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
             table.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: table.bounds.size.width - 10)
         }
@@ -59,13 +59,14 @@ class ChatViewContoller: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardWillHide(notification:)), name: UIResponder.keyboardWillHideNotification, object: nil)
         
         NotificationCenter.default.addObserver(self, selector: #selector(self.keyboardDidHide(notification:)), name: UIResponder.keyboardDidHideNotification, object: nil)
-        
+        cells = delegate?.setCells()
+        tableConfigurations()
     }
     
     func mockDataGenerator(){
         let message = TextMessageModel()
         messages = message.mockData()
-        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             messages.reverse()
         }
         table.reloadData()
@@ -90,9 +91,9 @@ class ChatViewContoller: UIViewController {
     }
     
     private func chatViewConfigurations(){
-        chatViewHolder.backgroundColor = ChatConfigurations.Colors.sharedInstance.chatViewHolderBackGroundColor
+        chatViewHolder.backgroundColor = ChatConfigurations.Colors.colors.chatViewHolderBackGroundColor
         textView = UITextView(frame: CGRect.zero)
-        textView.backgroundColor = ChatConfigurations.Colors.sharedInstance.chatViewHolderBackGroundColor
+        textView.backgroundColor = ChatConfigurations.Colors.colors.chatViewHolderBackGroundColor
         
         textView.delegate = self
         textView.text = "Message..."
@@ -100,11 +101,12 @@ class ChatViewContoller: UIViewController {
         
         sendButton = UIButton(frame: CGRect.zero)
         sendButton.setTitle("Send", for: UIControl.State.normal)
+        sendButton.setImage(ChatConfigurations.Icons.icons.sendButtonIcon, for: UIControl.State.normal)
         sendButton.setTitleColor(UIColor.black, for: .normal)
         sendButton.addTarget(self, action: #selector(didTapSend), for: UIControl.Event.touchUpInside)
         
         attachmentButton = UIButton(frame: CGRect.zero)
-        attachmentButton.setImage(UIImage(named: "attachment"), for: UIControl.State.normal)
+        attachmentButton.setImage(ChatConfigurations.Icons.icons.attachmentIcon, for: UIControl.State.normal)
         attachmentButton.imageView?.contentMode = .scaleAspectFit
         attachmentButton.setTitleColor(UIColor.black, for: .normal)
         
@@ -134,6 +136,7 @@ class ChatViewContoller: UIViewController {
         }
         self.sendButton.setImage(nil, for: UIControl.State.normal)
         self.sendButton.setTitle("Send", for: UIControl.State.normal)
+        sendButton.setImage(ChatConfigurations.Icons.icons.sendButtonIcon, for: UIControl.State.normal)
         
         isReplyViewShowing = true
         if let cell = replyCell as? ChatTextReceiveCell {
@@ -179,6 +182,7 @@ class ChatViewContoller: UIViewController {
         replyCell = nil
         self.sendButton.setImage(nil, for: UIControl.State.normal)
         self.sendButton.setTitle("Send", for: UIControl.State.normal)
+        sendButton.setImage(ChatConfigurations.Icons.icons.sendButtonIcon, for: UIControl.State.normal)
         let bottomConst = view.constraintFinder(identifier: "replyView bottomConst")
         if let bottomConst = bottomConst {
             UIView.animate(withDuration: 0.2, animations: {
@@ -208,7 +212,7 @@ class ChatViewContoller: UIViewController {
         table.reloadData()
         var position = UITableView.ScrollPosition.bottom
         var row = messages.count-1
-        if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             position = UITableView.ScrollPosition.top
             row = 0
         }
@@ -228,7 +232,7 @@ class ChatViewContoller: UIViewController {
                 }
             }
             else {
-                if ChatConfigurations.MessageConfigurations.sharedInstance.shouldFlip {
+                if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
                     messages.insert(TextMessageModel(condition: .send, date: "now", status: .send, text: textView.text, avatar: nil), at: 0)
                 }
                 else {
@@ -265,9 +269,9 @@ class ChatViewContoller: UIViewController {
     
     @objc private func dismissKeyboard(){
         textView.resignFirstResponder()
+        textViewDidEndEditing(textView)
         if let recognizers = self.table.gestureRecognizers {
           for recognizer in recognizers {
-
             if recognizer.name == self.tapTable.name {
                 self.table.removeGestureRecognizer(recognizer)
             }
@@ -382,7 +386,7 @@ extension ChatViewContoller:UITextViewDelegate{
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
-            textView.textColor = UIColor.black
+            textView.textColor = ChatConfigurations.Colors.colors.textColor
         }
     }
     func textViewDidEndEditing(_ textView: UITextView) {

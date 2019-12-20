@@ -12,7 +12,8 @@ import UIKit
 struct ChatConfigurations {
     
     struct Colors {
-        static let sharedInstance = Colors()
+        static var colors = Colors()
+        
         var chatViewHolderBackGroundColor:UIColor = UIColor(red: 239/255, green: 239/255, blue: 239/255, alpha: 1)
         
         private var colors:[UIColor] =
@@ -31,10 +32,30 @@ struct ChatConfigurations {
             let random = Int.random(in: 0..<colors.count)
             return colors[random]
         }
+        
+        /// Color for chat's background
+        var chatBackgroundColor:UIColor! = UIColor.white
+        
+        var textColor:UIColor! = UIColor.black
+        
+        var sendBubleViewBackGroundColor:UIColor! = UIColor(red: 88/255, green: 136/255, blue: 140/255, alpha: 1)
+        
+        var bubleTextColor:UIColor! = UIColor.white
+        
+        
+        var receiveBubleViewBackGroundColor:UIColor! = UIColor(red: 137/255, green: 144/255, blue: 159/255, alpha: 1)
+        
     }
     struct MessageConfigurations {
-        static var sharedInstance = MessageConfigurations()
+        static var messageConfigurations = MessageConfigurations()
         var shouldFlip = true
     }
     
+    struct Icons {
+        static var icons = Icons()
+        
+        var sendButtonIcon:UIImage? = nil
+        
+        var attachmentIcon:UIImage! = UIImage(named: "attachment")
+    }
 }

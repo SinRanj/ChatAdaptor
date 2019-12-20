@@ -38,7 +38,7 @@ class ChatImageSendCell: ChatCell {
         avatarView.backgroundColor = UIColor.red
         avatarView.cornerRadius(radius: avatarHeight/2)
         
-        bubleViewBackGroundColor = UIColor(red: 88/255, green: 136/255, blue: 140/255, alpha: 1)
+        bubleViewBackGroundColor = ChatConfigurations.Colors.colors.sendBubleViewBackGroundColor
         statusLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
         
         constraintWithCustomMargin(view: cellImageView, left: 100, leftRelation: .greaterThanOrEqual, right: -10, top: 12, bottom: messageBottomConst, rightView: avatarView,width:200)

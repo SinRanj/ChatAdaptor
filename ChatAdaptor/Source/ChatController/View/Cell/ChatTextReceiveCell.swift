@@ -12,7 +12,7 @@ class ChatTextReceiveCell: ChatCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        bubleViewBackGroundColor = UIColor(red: 137/255, green: 144/255, blue: 159/255, alpha: 1)
+        bubleViewBackGroundColor = ChatConfigurations.Colors.colors.receiveBubleViewBackGroundColor
         messageLabel.identifier = "messageLabel"
         bubleView.identifier = "bubleView"
         avatarView.identifier = "avatarView"

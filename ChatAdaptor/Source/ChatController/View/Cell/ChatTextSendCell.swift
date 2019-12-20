@@ -30,7 +30,7 @@ class ChatTextSendCell: ChatCell {
         avatarView.backgroundColor = UIColor.red
         avatarView.cornerRadius(radius: avatarHeight/2)
         
-        bubleViewBackGroundColor = UIColor(red: 88/255, green: 136/255, blue: 140/255, alpha: 1)
+        bubleViewBackGroundColor = ChatConfigurations.Colors.colors.sendBubleViewBackGroundColor
         statusLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
         messageLabel.identifier = "messageLabel"
         bubleView.identifier = "bubleView"
