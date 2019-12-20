@@ -9,7 +9,14 @@
 import Foundation
 import UIKit
 
-protocol ChatControllerDelegates {
+@objc protocol ChatControllerDelegates {
+    
     func setCells()->Array<ChatCell.Type>
+    
     func chatTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell
+    func attachmentTapped()
+    
+    @objc optional func sendTapped()
+    
+    @objc optional var sendDelegate:Any? {get set}
 }

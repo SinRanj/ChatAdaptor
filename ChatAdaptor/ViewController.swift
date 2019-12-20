@@ -14,11 +14,12 @@ class ViewController: ChatViewContoller {
         super.viewDidLoad()
         delegate = self
         ChatConfigurations.Colors.colors.chatBackgroundColor = UIColor.white
+//        sendDelegate = self
         initializer()
         mockDataGenerator()
     }
+    var sendDelegate: Any?
 }
-
 extension ViewController: ChatControllerDelegates{
     func chatTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let message = messages[indexPath.row] as? TextMessageModel {
@@ -79,6 +80,12 @@ extension ViewController: ChatControllerDelegates{
         cells.append(ChatImageReceiveCell.self)
         cells.append(ChatImageSendCell.self)
         return cells
+    }
+    func attachmentTapped() {
+        
+    }
+    func sendTapped() {
+        
     }
 }
 

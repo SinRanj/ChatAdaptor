@@ -108,7 +108,7 @@ class ChatViewContoller: UIViewController {
         attachmentButton = UIButton(frame: CGRect.zero)
         attachmentButton.setImage(ChatConfigurations.Icons.icons.attachmentIcon, for: UIControl.State.normal)
         attachmentButton.imageView?.contentMode = .scaleAspectFit
-        attachmentButton.setTitleColor(UIColor.black, for: .normal)
+        attachmentButton.addTarget(self, action: #selector(didTapAttachment), for: UIControl.Event.touchUpInside)
         
         chatViewHolder.addSubview(textView)
         chatViewHolder.addSubview(sendButton)
@@ -125,6 +125,7 @@ class ChatViewContoller: UIViewController {
         chatViewHolderHeightConst = chatViewHolder.constraintFinder(identifier: "heightConst")
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
+    
     private func addReplyView(){
         if replyView == nil {
             replyView = ReplyView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 0), closeAction: {
@@ -164,6 +165,7 @@ class ChatViewContoller: UIViewController {
         replyView.identifier = "replyView"
         replyViewConfigurations()
     }
+    
     private func replyViewConfigurations(){
         view.constraintBottomWithCustomHeight(view: replyView, heightConst: 60,secondView: chatViewHolder)
         self.view.layoutIfNeeded()
@@ -176,6 +178,7 @@ class ChatViewContoller: UIViewController {
             }
         }
     }
+    
     @objc func closeReplyView(){
         messageAction = nil
         messageIndexPath = nil
@@ -197,6 +200,7 @@ class ChatViewContoller: UIViewController {
             }
         }
     }
+    
     func layouts(shouldDraw:Bool=true){
         chatViewHolder.removeLine()
         if shouldDraw {
@@ -204,6 +208,7 @@ class ChatViewContoller: UIViewController {
         }
         
     }
+    
     deinit {
         NotificationCenter.default.removeObserver(self)
     }
@@ -219,7 +224,34 @@ class ChatViewContoller: UIViewController {
         table.scrollToRow(at: IndexPath(row: row , section: 0), at: position, animated: true)
         
     }
+    
+    func didReceiveMessage(array:Array<MessageModel>){
+        for i in array {
+            if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
+                messages.insert(i, at: 0)
+            }
+            else {
+                messages.append(i)
+            }
+        }
+        updateMessages()
+
+    }
+    
+    func didReceiveMessage(message:MessageModel){
+        if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
+            messages.insert(message, at: 0)
+        }
+        else {
+            messages.append(message)
+        }
+    }
+    
     @objc private func didTapSend(){
+        if delegate?.sendDelegate is ChatViewContoller {
+            delegate?.sendTapped?()
+            return
+        }
         if textView.text.trimmingCharacters(in: .whitespacesAndNewlines) != "" && textView.textColor != UIColor.lightGray {
             if messageAction != nil {
                 if messageAction == .edit {
@@ -245,6 +277,9 @@ class ChatViewContoller: UIViewController {
         }
     }
     
+    @objc private func didTapAttachment(){
+        delegate?.attachmentTapped()
+    }
     
     @objc func keyboardWillShow(notification: NSNotification) {
         if let keyboardSize = (notification.userInfo?[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue)?.cgRectValue {
@@ -263,6 +298,7 @@ class ChatViewContoller: UIViewController {
             self.view.frame.origin.y = 0
         }
     }
+    
     @objc func keyboardDidHide(notification: NSNotification) {
         keyboardIsVisible = false
     }
@@ -298,6 +334,7 @@ class ChatViewContoller: UIViewController {
             }
         }
     }
+    
     private func showSpotLight(indexPath:IndexPath){
         let rectOfCellInTableView = self.table.rectForRow(at: indexPath)
         guard let cell = table.cellForRow(at: indexPath) as? ChatCell else { return  }
@@ -307,6 +344,7 @@ class ChatViewContoller: UIViewController {
         
         self.spotlight.addSpotlightToView(cell: cell,rect: rectOfCellInSuperview,messageActions: messages[indexPath.row].actionsForType(), indexPath: indexPath)
     }
+    
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         layouts(shouldDraw: !isReplyViewShowing)
@@ -344,11 +382,14 @@ extension ChatViewContoller:UITableViewDataSource,UITableViewDelegate {
         return delegate?.chatTableView(tableView, cellForRowAt: indexPath) ?? UITableViewCell()
         
     }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return UITableView.automaticDimension
     }
+    
 }
 extension ChatViewContoller:UITextViewDelegate{
+    
     func textViewDidChange(_ textView: UITextView) {
         let fixedWidth = textView.frame.size.width
         let newSize = textView.sizeThatFits(CGSize.init(width: fixedWidth, height: CGFloat(MAXFLOAT)))
@@ -383,16 +424,19 @@ extension ChatViewContoller:UITextViewDelegate{
         }
         oldTextViewSize = newFrame.size
     }
+    
     func textViewDidBeginEditing(_ textView: UITextView) {
         if textView.textColor == UIColor.lightGray {
             textView.text = nil
             textView.textColor = ChatConfigurations.Colors.colors.textColor
         }
     }
+    
     func textViewDidEndEditing(_ textView: UITextView) {
         if textView.text.isEmpty {
             textView.text = "Message..."
             textView.textColor = UIColor.lightGray
         }
     }
+    
 }
