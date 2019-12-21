@@ -12,13 +12,13 @@ class ChatTextReceiveCell: ChatCell {
 
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
-        bubleViewBackGroundColor = ChatConfigurations.Colors.colors.receiveBubleViewBackGroundColor
+        bubbleViewBackGroundColor = ChatConfigurations.Colors.colors.receiveBubbleViewBackGroundColor
         messageLabel.identifier = "messageLabel"
-        bubleView.identifier = "bubleView"
+        bubbleView.identifier = "bubbleView"
         avatarView.identifier = "avatarView"
         constraintWithCustomWidthAndHeight(view: avatarView, margin: 8, width: avatarHeight, height: avatarHeight, isLeft: true)
         constraintWithCustomMargin(view: messageLabel, left: 10, right: -100, rightRelation:.lessThanOrEqual, top: 12, bottom: messageBottomConst,leftView:avatarView )
-        constraintWithLeadingAndTrailing(view: bubleView, left: -8, right: 8, top: -8, bottom: bubleBottomConst, secondView: messageLabel)
+        constraintWithLeadingAndTrailing(view: bubbleView, left: -8, right: 8, top: -8, bottom: bubbleBottomConst, secondView: messageLabel)
         constraintWithLeadingAndTrailing(view: dateLabel, left: 0, right: 0, top: 0,topActive: false, bottom: 20, secondView: messageLabel)
 
         avatarView.backgroundColor = UIColor.red

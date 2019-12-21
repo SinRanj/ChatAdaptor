@@ -38,12 +38,12 @@ struct ChatConfigurations {
         
         var textColor:UIColor! = UIColor.black
         
-        var sendBubleViewBackGroundColor:UIColor! = UIColor(red: 88/255, green: 136/255, blue: 140/255, alpha: 1)
+        var sendBubbleViewBackGroundColor:UIColor! = UIColor(red: 88/255, green: 136/255, blue: 140/255, alpha: 1)
         
-        var bubleTextColor:UIColor! = UIColor.white
+        var bubbleTextColor:UIColor! = UIColor.white
         
         
-        var receiveBubleViewBackGroundColor:UIColor! = UIColor(red: 137/255, green: 144/255, blue: 159/255, alpha: 1)
+        var receiveBubbleViewBackGroundColor:UIColor! = UIColor(red: 137/255, green: 144/255, blue: 159/255, alpha: 1)
         
     }
     struct MessageConfigurations {

@@ -11,7 +11,7 @@ import UIKit
 class ChatCell: UITableViewCell {
     
     /// Bubble view of message.
-    let bubleView = UIView()
+    let bubbleView = UIView()
     
     /// Date of received or sent message.
     var date:String?{
@@ -28,9 +28,9 @@ class ChatCell: UITableViewCell {
     }
     
     /// Background color for bubble message.
-    var bubleViewBackGroundColor:UIColor=UIColor.gray{
+    var bubbleViewBackGroundColor:UIColor=UIColor.gray{
         didSet{
-            bubleView.backgroundColor = bubleViewBackGroundColor
+            bubbleView.backgroundColor = bubbleViewBackGroundColor
         }
     }
     
@@ -61,7 +61,7 @@ class ChatCell: UITableViewCell {
     
     
     /// Default constraint for borrom of bubble.
-    var bubleBottomConst:CGFloat = 8
+    var bubbleBottomConst:CGFloat = 8
     
     /// This function set avatar and move bubble and message based on it.
     private func setAvatar(){
@@ -85,8 +85,8 @@ class ChatCell: UITableViewCell {
             if bottomConst?.constant == messageBottomConst {
                 bottomConst?.constant += -17
             }
-            bottomConst = constraintFinder(identifier: "bubleView bottomConst")
-            if bottomConst?.constant == bubleBottomConst {
+            bottomConst = constraintFinder(identifier: "bubbleView bottomConst")
+            if bottomConst?.constant == bubbleBottomConst {
                 bottomConst?.constant += 17
             }
             layoutIfNeeded()
@@ -100,8 +100,8 @@ class ChatCell: UITableViewCell {
         if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             self.transform = CGAffineTransform(rotationAngle: (-.pi))
         }
-        bubleView.cornerRadius()
-        addSubview(bubleView)
+        bubbleView.cornerRadius()
+        addSubview(bubbleView)
         addSubview(messageLabel)
         addSubview(dateLabel)
         addSubview(avatarView)
@@ -112,8 +112,8 @@ class ChatCell: UITableViewCell {
         messageLabel.font = ChatConfigurations.Fonts.fonts.messageFont
         
         dateLabel.textAlignment = .right
-        dateLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor
-        messageLabel.textColor = ChatConfigurations.Colors.colors.bubleTextColor
+        dateLabel.textColor = ChatConfigurations.Colors.colors.bubbleTextColor
+        messageLabel.textColor = ChatConfigurations.Colors.colors.bubbleTextColor
         messageLabel.adjustsFontSizeToFitWidth = true
     }
 

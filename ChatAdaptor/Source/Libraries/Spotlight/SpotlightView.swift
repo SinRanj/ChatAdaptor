@@ -57,7 +57,7 @@ class SpotlightView: UIView {
         let height:CGFloat = (CGFloat(items.count*40))
         
         if rect.origin.y >= height+40.0 {
-            if cell.bubleView.frame.origin.x <= 50 {
+            if cell.bubbleView.frame.origin.x <= 50 {
                 menuFrame = CGRect(x: 10, y: rect.origin.y-height, width: 150, height: height)
             }
             else {
@@ -66,7 +66,7 @@ class SpotlightView: UIView {
 
         }
         else {
-            if cell.bubleView.frame.origin.x <= 50 {
+            if cell.bubbleView.frame.origin.x <= 50 {
                 menuFrame = CGRect(x: 10, y: rect.origin.y+(rect.height)-10, width: 150, height: height)
             }
             else {
@@ -78,8 +78,8 @@ class SpotlightView: UIView {
         menu.delegate = self
         menu.show()
         
-        let bubbleImage = cell.bubleView.asImage()
-        let bubbleFrame = parentView.convert(cell.bubleView.frame, from: cell.bubleView.superview!)
+        let bubbleImage = cell.bubbleView.asImage()
+        let bubbleFrame = parentView.convert(cell.bubbleView.frame, from: cell.bubbleView.superview!)
         bubbleViewImage = UIImageView(frame: bubbleFrame)
         bubbleViewImage.image = bubbleImage
         
@@ -111,7 +111,7 @@ class SpotlightView: UIView {
         self.addSubview(messageViewImage)
         self.addSubview(dateLabelViewImage)
         
-        let spotlightPath = UIBezierPath(roundedRect: CGRect(x: bubbleFrame.origin.x, y: bubbleFrame.origin.y, width: cell.bubleView.frame.width, height: cell.bubleView.frame.height), cornerRadius: 8)
+        let spotlightPath = UIBezierPath(roundedRect: CGRect(x: bubbleFrame.origin.x, y: bubbleFrame.origin.y, width: cell.bubbleView.frame.width, height: cell.bubbleView.frame.height), cornerRadius: 8)
         
         path.append(spotlightPath)
         fillLayer.path = path.cgPath

@@ -30,17 +30,17 @@ class ChatTextSendCell: ChatCell {
         avatarView.backgroundColor = UIColor.red
         avatarView.cornerRadius(radius: avatarHeight/2)
         
-        bubleViewBackGroundColor = ChatConfigurations.Colors.colors.sendBubleViewBackGroundColor
+        bubbleViewBackGroundColor = ChatConfigurations.Colors.colors.sendBubbleViewBackGroundColor
         statusLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
         messageLabel.identifier = "messageLabel"
-        bubleView.identifier = "bubleView"
+        bubbleView.identifier = "bubbleView"
 
 
         constraintWithCustomMargin(view: messageLabel, left: 100, leftRelation: .greaterThanOrEqual, right: -10, top: 12, bottom: messageBottomConst, rightView: avatarView)
-        constraintWithLeadingAndTrailing(view: bubleView, left: -8, right: 8, top: -8, bottom: 8, secondView: messageLabel)
+        constraintWithLeadingAndTrailing(view: bubbleView, left: -8, right: 8, top: -8, bottom: 8, secondView: messageLabel)
         constraintWithLeadingAndTrailing(view: dateLabel, left: 0, right: 0, top: 0,topActive: false, bottom: 20, secondView: messageLabel)
         
-        constraintLeftWithAnotherViewNoWidthNoHeight(view: statusLabel, rightView: bubleView,bottomMargin: 15)
+        constraintLeftWithAnotherViewNoWidthNoHeight(view: statusLabel, rightView: bubbleView,bottomMargin: 15)
         
     }
     
