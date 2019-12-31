@@ -59,10 +59,13 @@ struct ChatConfigurations {
         var attachmentIcon:UIImage! = UIImage(named: "attachment")
         
         var downIcon:UIImage! = UIImage(named: "down")
+        
+        var lockIcon:UIImage! = UIImage(named: "lock")?.withRenderingMode(UIImage.RenderingMode.alwaysTemplate)
     }
     
     struct Fonts {
         static var fonts = Fonts()
         var messageFont:UIFont = UIFont.systemFont(ofSize: 12)
+        var voteCountFont = UIFont.systemFont(ofSize: 28)
     }
 }

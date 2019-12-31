@@ -49,6 +49,7 @@ class ChatViewContoller: UIViewController {
         if ChatConfigurations.MessageConfigurations.messageConfigurations.shouldFlip {
             table.transform = CGAffineTransform(rotationAngle: -(CGFloat)(Double.pi))
             table.scrollIndicatorInsets = UIEdgeInsets(top: 0, left: 0, bottom: 0, right: table.bounds.size.width - 10)
+            
         }
         
         chatViewHolder = UIView(frame: CGRect.zero)
