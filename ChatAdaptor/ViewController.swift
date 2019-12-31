@@ -47,7 +47,7 @@ extension ViewController: ChatControllerDelegates{
               }
               else if let message = messages[indexPath.row] as? ImageMessageModel {
                   if message.condition == .send {
-                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatPostSendCell", for: indexPath) as? ChatPostSendCell
+                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatImageSendCell", for: indexPath) as? ChatImageSendCell
                       cell!.date = message.date
                       cell!.name = message.name
                       if let status = message.status {
@@ -80,7 +80,6 @@ extension ViewController: ChatControllerDelegates{
         cells.append(ChatTextSendCell.self)
         cells.append(ChatImageReceiveCell.self)
         cells.append(ChatImageSendCell.self)
-        cells.append(ChatPostSendCell.self)
         return cells
     }
     func attachmentTapped() {
