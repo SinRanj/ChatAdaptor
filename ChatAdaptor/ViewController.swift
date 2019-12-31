@@ -9,12 +9,12 @@
 import UIKit
 
 class ViewController: ChatViewContoller {
-
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         delegate = self
         ChatConfigurations.Colors.colors.chatBackgroundColor = UIColor.white
-//        sendDelegate = self
+        //        sendDelegate = self
         chatViewHolderHeight = 50
         initializer()
         mockDataGenerator()
@@ -24,51 +24,53 @@ class ViewController: ChatViewContoller {
 extension ViewController: ChatControllerDelegates{
     func chatTableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         if let message = messages[indexPath.row] as? TextMessageModel {
-                  if message.condition == .send {
-                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatTextSendCell", for: indexPath) as? ChatTextSendCell
-                      cell!.date = message.date
-                      cell!.name = message.name
-                      if let status = message.status {
-                          cell!.status = "\(status)"
-                      }
-                      cell!.message = message.text
-                      cell!.hasAvatar = message.avatar
-                      
-                      return cell!
-                  }
-                  else {
-                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatTextReceiveCell", for: indexPath) as? ChatTextReceiveCell
-                      cell!.date = message.date
-                      cell!.name = message.name
-                      cell!.message = message.text
-                      cell!.hasAvatar = message.avatar
-                      return cell!
-                  }
-              }
-              else if let message = messages[indexPath.row] as? ImageMessageModel {
-                  if message.condition == .send {
-                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatPostSendCell", for: indexPath) as? ChatPostSendCell
-                      cell!.date = message.date
-                      cell!.name = message.name
-                      if let status = message.status {
-                          cell!.status = "\(status)"
-                      }
-                      
-                      cell!.cellImageView.image = message.image
-                      cell!.hasAvatar = message.avatar
-                      
-                      return cell!
-                  }
-                  else {
-                      let cell = tableView.dequeueReusableCell(withIdentifier: "ChatImageReceiveCell", for: indexPath) as? ChatImageReceiveCell
-                      cell!.name = message.name
-                      cell!.date = message.date
-                      cell!.cellImageView.image = message.image
-                      cell!.hasAvatar = message.avatar
-                      return cell!
-                  }
-
-              }
+            if message.condition == .send {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatTextSendCell", for: indexPath) as? ChatTextSendCell
+                cell!.date = message.date
+                cell!.name = message.name
+                if let status = message.status {
+                    cell!.status = "\(status)"
+                }
+                cell!.message = message.text
+                cell!.hasAvatar = message.avatar
+                
+                return cell!
+            }
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatTextReceiveCell", for: indexPath) as? ChatTextReceiveCell
+                cell!.date = message.date
+                cell!.name = message.name
+                cell!.message = message.text
+                cell!.hasAvatar = message.avatar
+                return cell!
+            }
+        }
+        else if let message = messages[indexPath.row] as? ImageMessageModel {
+            if message.condition == .send {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatPostSendCell", for: indexPath) as? ChatPostSendCell
+                cell!.isPrivate = true
+                cell!.voteCount = 0
+                cell!.date = message.date
+                cell!.name = message.name
+                if let status = message.status {
+                    cell!.status = "\(status)"
+                }
+                
+                cell!.cellImageView.image = message.image
+                cell!.hasAvatar = message.avatar
+                
+                return cell!
+            }
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatImageReceiveCell", for: indexPath) as? ChatImageReceiveCell
+                cell!.name = message.name
+                cell!.date = message.date
+                cell!.cellImageView.image = message.image
+                cell!.hasAvatar = message.avatar
+                return cell!
+            }
+            
+        }
         else {
             return UITableViewCell()
         }
