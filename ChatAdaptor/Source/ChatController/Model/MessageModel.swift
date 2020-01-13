@@ -81,6 +81,13 @@ extension MessageModel {
         messages.append(ImageMessageModel(condition: messageCondition.receive, date: "", status: nil, avatar: UIImage(named: "morty-avatar"), image: UIImage(named: "rick-avatar"), name: "Rick"))
         
         messages.append(ImageMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), image: UIImage(named: "morty-avatar")))
+        
+        let postModel = PostModel(image: UIImage(named: "morty-avatar"), vote: 2, isPrivate: false)
+        let postModel2 = PostModel(image: UIImage(named: "rick-avatar"), vote: nil, isPrivate: true)
+        
+        let postMessageModel = PostMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), post: [postModel,postModel2])
+        
+        messages.append(postMessageModel)
         return messages
     }
 }

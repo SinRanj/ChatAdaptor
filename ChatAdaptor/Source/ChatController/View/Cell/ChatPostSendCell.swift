@@ -11,35 +11,52 @@ import UIKit
 
 class ChatPostSendCell: ChatImageSendCell {
     
-    var lockImage = UIImageView()
-    var voteLabel = UILabel()
-    var voteCountLabel = UILabel()
+    let cellImageView2 = UIImageView()
     
-    var isPrivate:Bool = false{
+    var posts:[PostModel]! {
         willSet {
-            lockImage.isHidden = !newValue
+            for i in newValue.enumerated() {
+                let lockImage = UIImageView()
+                let voteLabel = UILabel()
+                let voteCountLabel = UILabel()
+                if i.offset == 0 {
+                    lockImage.isHidden = !i.element.isPrivate
+                    if i.element.vote != nil {
+                        voteLabel.isHidden = false
+                        voteCountLabel.text = "\(i.element.vote!)"
+                        voteCountLabel.isHidden = false
+                    }
+                    else {
+                        voteLabel.isHidden = true
+                        voteCountLabel.isHidden = true
+                    }
+                    cellImageView.image = i.element.image
+                    setConstraints(cellImageView: self.cellImageView, rightView: avatarView, lockImage: lockImage, voteLabel: voteLabel, voteCountLabel: voteCountLabel)
+                }
+                else {
+                    lockImage.isHidden = !i.element.isPrivate
+                    if i.element.vote != nil {
+                        voteLabel.isHidden = false
+                        voteCountLabel.text = "\(i.element.vote!)"
+                        voteCountLabel.isHidden = false
+                    }
+                    else {
+                        voteLabel.isHidden = true
+                        voteCountLabel.isHidden = true
+                    }
+                    cellImageView2.cornerRadius()
+                    cellImageView2.image = i.element.image
+                    addSubview(cellImageView2)
+                    setConstraints(cellImageView: cellImageView2, rightView: cellImageView,rightConst: -4, lockImage: lockImage, voteLabel: voteLabel, voteCountLabel: voteCountLabel)
+                    
+                    constraintCustom(view: bubbleView, leftConst: -4, leftView: cellImageView2, leftViewAttribute: .left, leftSelfAttribute: NSLayoutConstraint.Attribute.left, rightConst: 4, rightView: cellImageView, rightViewAttribute: NSLayoutConstraint.Attribute.right, rightSelfAttribute: .right, bottomConst: 4, bottomView: cellImageView, bottomViewAttribute: NSLayoutConstraint.Attribute.bottom, bottomSelfAttribute: NSLayoutConstraint.Attribute.bottom, topConst: -4, topView: cellImageView, topViewAttribute: NSLayoutConstraint.Attribute.top, topSelfAttribute: .top)
+                }
+            }
         }
     }
-    var voteCount:Int = 0 {
-        willSet {
-            if newValue > 0 {
-                voteCountLabel.text = "\(newValue)"
-                voteCountLabel.isHidden = false
-                voteLabel.isHidden = false
-            }
-            else {
-                voteCountLabel.isHidden = true
-                voteLabel.isHidden = true
-            }
-        }
-    }
-    
-    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
-        super.init(style: style, reuseIdentifier: reuseIdentifier)
-        
+    private func setConstraints(cellImageView:UIImageView,rightView:UIView,rightConst:CGFloat = -10, lockImage:UIImageView, voteLabel:UILabel, voteCountLabel:UILabel){
         lockImage.image = ChatConfigurations.Icons.icons.lockIcon
         lockImage.tintColor = UIColor.white
-        lockImage.isHidden = !isPrivate
         
         bubbleView.backgroundColor = UIColor.white
         
@@ -54,15 +71,19 @@ class ChatPostSendCell: ChatImageSendCell {
         addSubview(voteLabel)
         
         voteLabel.text = "Vote"
-        voteLabel.isHidden = true
         
-        constraintCustom(view: cellImageView, rightConst: -10,rightView: avatarView,rightViewAttribute: .left,rightSelfAttribute: .right, bottomConst: messageBottomConst, topConst: 12, widthConst: 180, heightConst: 150)
+        constraintCustom(view: cellImageView, rightConst: rightConst,rightView: rightView,rightViewAttribute: .left,rightSelfAttribute: .right, bottomConst: messageBottomConst, topConst: 12, widthConst: 150, heightConst: 135)
         
         constraintCustom(view: lockImage, rightConst: -4,rightView:cellImageView,rightViewAttribute: .right,rightSelfAttribute: .right , topConst: 8,topView: cellImageView, topViewAttribute: .top, topSelfAttribute: .top, widthConst: 20, heightConst: 20)
         
         constraintCustom(view: voteCountLabel, leftConst: 8, leftView: cellImageView, leftViewAttribute: NSLayoutConstraint.Attribute.left, leftSelfAttribute: NSLayoutConstraint.Attribute.left, topConst: 8, topView: cellImageView, topViewAttribute: NSLayoutConstraint.Attribute.top, topSelfAttribute: NSLayoutConstraint.Attribute.top, heightConst: 20)
         
         constraintCustom(view: voteLabel,leftConst: 3, leftView: voteCountLabel, leftViewAttribute: NSLayoutConstraint.Attribute.leading, leftSelfAttribute: NSLayoutConstraint.Attribute.leading, topConst: 0, topView: voteCountLabel, topViewAttribute: NSLayoutConstraint.Attribute.bottom, topSelfAttribute: NSLayoutConstraint.Attribute.top)
+    }
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        
+
     }
     
     required init?(coder: NSCoder) {

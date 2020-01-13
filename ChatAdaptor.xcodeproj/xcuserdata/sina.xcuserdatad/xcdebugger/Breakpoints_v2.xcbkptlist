@@ -64,7 +64,23 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "149"
             endingLineNumber = "149"
-            landmarkName = "constraintLeftWithAnotherViewNoWidthNoHeight(view:rightView:rightMargin:bottomMargin:)"
+            landmarkName = "UIView"
+            landmarkType = "21">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "43143CDC-E805-4BDC-B406-A08A08C8D841"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "ChatAdaptor/Source/ChatController/View/Cell/ChatPostSendCell.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "75"
+            endingLineNumber = "75"
+            landmarkName = "setConstraints(cellImageView:rightView:rightConst:lockImage:voteLabel:voteCountLabel:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

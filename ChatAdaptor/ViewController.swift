@@ -47,9 +47,7 @@ extension ViewController: ChatControllerDelegates{
         }
         else if let message = messages[indexPath.row] as? ImageMessageModel {
             if message.condition == .send {
-                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatPostSendCell", for: indexPath) as? ChatPostSendCell
-                cell!.isPrivate = true
-                cell!.voteCount = 0
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatImageSendCell", for: indexPath) as? ChatImageSendCell
                 cell!.date = message.date
                 cell!.name = message.name
                 if let status = message.status {
@@ -70,6 +68,27 @@ extension ViewController: ChatControllerDelegates{
                 return cell!
             }
             
+        }
+        else if let message = messages[indexPath.row] as? PostMessageModel {
+            if message.condition == .send {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatPostSendCell", for: indexPath) as? ChatPostSendCell
+                cell!.date = message.date
+                cell!.name = message.name
+                cell!.posts = message.post
+                if let status = message.status {
+                    cell!.status = "\(status)"
+                }
+                cell!.hasAvatar = message.avatar
+                
+                return cell!
+            }
+            else {
+                let cell = tableView.dequeueReusableCell(withIdentifier: "ChatImageReceiveCell", for: indexPath) as? ChatImageReceiveCell
+                cell!.name = message.name
+                cell!.date = message.date
+                cell!.hasAvatar = message.avatar
+                return cell!
+            }
         }
         else {
             return UITableViewCell()

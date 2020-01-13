@@ -109,7 +109,9 @@ extension UIView {
             NSLayoutConstraint(item: view, attribute: bottomSelfAttribute, relatedBy: NSLayoutConstraint.Relation.equal, toItem: bottomView ?? self, attribute: bottomViewAttribute, multiplier: 1, constant: bottomConst).isActive = true
         }
         if let widthConst = widthConst {
-            NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: widthConst).isActive = true
+            let width = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.width, multiplier: 1, constant: widthConst)
+            width.identifier = "widthConst"
+            NSLayoutConstraint.activate([width])
         }
         if let heightConst = heightConst {
             let height = NSLayoutConstraint(item: view, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.height, multiplier: 1, constant: heightConst)
