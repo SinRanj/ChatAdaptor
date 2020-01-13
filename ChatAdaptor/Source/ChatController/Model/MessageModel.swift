@@ -82,12 +82,22 @@ extension MessageModel {
         
         messages.append(ImageMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), image: UIImage(named: "morty-avatar")))
         
-        let postModel = PostModel(image: UIImage(named: "morty-avatar"), vote: 2, isPrivate: false)
-        let postModel2 = PostModel(image: UIImage(named: "rick-avatar"), vote: nil, isPrivate: true)
+        var postModel = PostModel(image: UIImage(named: "morty-avatar"), vote: 2, isPrivate: false)
+        var postModel2 = PostModel(image: UIImage(named: "rick-avatar"), vote: nil, isPrivate: true)
         
         let postMessageModel = PostMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), post: [postModel,postModel2])
         
         messages.append(postMessageModel)
+        
+        postModel = PostModel(image: UIImage(named: "morty-avatar"), vote: nil, isPrivate: false)
+        postModel2 = PostModel(image: UIImage(named: "rick-avatar"), vote: 2, isPrivate: true)
+        
+        let postMessageModel2 = PostMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), post: [postModel,postModel2])
+        messages.append(postMessageModel2)
+
+        postModel = PostModel(image: UIImage(named: "rick-avatar"), vote: 10, isPrivate: true)
+        let postMessageModel3 = PostMessageModel(condition: messageCondition.send, date: "1d ago", status: .seen, avatar: UIImage(named: "rick-avatar"), post: [postModel])
+        messages.append(postMessageModel3)
         return messages
     }
 }

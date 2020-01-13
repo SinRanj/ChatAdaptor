@@ -138,11 +138,10 @@ class ChatViewContoller: UIViewController {
         chatViewHolder.constraintCustom(view: textView, leftConst: 8, leftView: attachmentButton, leftViewAttribute: NSLayoutConstraint.Attribute.right, leftSelfAttribute: NSLayoutConstraint.Attribute.left, rightConst: -8, rightView: sendButton, rightViewAttribute: NSLayoutConstraint.Attribute.left, rightSelfAttribute: NSLayoutConstraint.Attribute.right, bottomConst: -8-view.bottomPadding, topConst: 8)
         
 //        view.constraintBottomWithCustomHeight(view: chatViewHolder, heightConst: chatViewHolderHeight+self.view.bottomPadding)
-        
+        chatViewHolder.identifier = "chatViewHolder"
         view.constraintCustom(view: chatViewHolder, leftConst: 0, rightConst: 0, bottomConst: 0, heightConst: chatViewHolderHeight+self.view.bottomPadding)
         chatViewHolderBottomConst = view.constraintFinder(identifier: "chatViewHolder bottomConst")
-
-        chatViewHolderHeightConst = chatViewHolder.constraintFinder(identifier: "heightConst")
+        chatViewHolderHeightConst = chatViewHolder.constraintFinder(identifier: "\(chatViewHolder.identifier!) heightConst")
         originalChatViewHolderHeightConst = chatViewHolderHeightConst.constant
     }
     
