@@ -22,6 +22,7 @@ class ChatPostSendCell: ChatImageSendCell {
                 if i.offset == 0 {
                     cellImageView.identifier = "sendImageView"
                     cellImageView.image = i.element.image
+                    cellImageView.contentMode = .scaleAspectFill
                     setConstraints(cellImageView: self.cellImageView, rightView: avatarView, lockImage: lockImage, voteLabel: voteLabel, voteCountLabel: voteCountLabel)
                     lockImage.isHidden = !i.element.isPrivate
                     if i.element.vote != nil {
@@ -40,6 +41,7 @@ class ChatPostSendCell: ChatImageSendCell {
                 else {
                     lockImage.isHidden = !i.element.isPrivate
                     cellImageView2.cornerRadius()
+                    cellImageView2.contentMode = .scaleAspectFill
                     cellImageView2.image = i.element.image
                     addSubview(cellImageView2)
                     cellImageView2.identifier = "sendImageView2"
