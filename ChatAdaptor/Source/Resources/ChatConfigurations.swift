@@ -65,7 +65,7 @@ struct ChatConfigurations {
     
     struct Fonts {
         static var fonts = Fonts()
-        var messageFont:UIFont = UIFont.systemFont(ofSize: 12)
+        var messageFont:UIFont = UIFont.systemFont(ofSize: 14)
         var voteCountFont = UIFont.systemFont(ofSize: 28)
         var voteFont = UIFont.systemFont(ofSize: 14)
     }

@@ -35,13 +35,14 @@ class ChatImageSendCell: ChatCell {
         avatarView.backgroundColor = UIColor.red
         avatarView.cornerRadius(radius: avatarHeight/2)
         bubbleViewBackGroundColor = ChatConfigurations.Colors.colors.sendBubbleViewBackGroundColor
-        statusLabel.font = UIFont(name: dateLabel.font.fontName, size: 14)
+        statusLabel.font = UIFont(name: dateLabel.font.fontName, size: ChatConfigurations.Fonts.fonts.messageFont.pointSize-2)
+
         
         constraintWithCustomWidthAndHeight(view: avatarView, margin: 8, width: avatarHeight, height: avatarHeight, isRight: true)
         
         constraintWithCustomMargin(view: cellImageView, left: 100, leftRelation: .greaterThanOrEqual, right: -10, top: 12, bottom: messageBottomConst, rightView: avatarView,width:200)
         constraintWithLeadingAndTrailing(view: bubbleView, left: -4, right: 4, top: -4, bottom: 4, secondView: cellImageView)
-        constraintWithLeadingAndTrailing(view: dateLabel, left: 0, right: 0, top: 0,topActive: false, bottom: 20, secondView: cellImageView)
+        constraintCustom(view: dateLabel,rightConst: 0, rightView: cellImageView, rightViewAttribute: NSLayoutConstraint.Attribute.trailing, rightSelfAttribute: NSLayoutConstraint.Attribute.trailing, topConst: 6, topView: cellImageView, topViewAttribute: NSLayoutConstraint.Attribute.bottom, topSelfAttribute: NSLayoutConstraint.Attribute.top)
         
         constraintLeftWithAnotherViewNoWidthNoHeight(view: statusLabel, rightView: bubbleView,bottomMargin: 15)
         

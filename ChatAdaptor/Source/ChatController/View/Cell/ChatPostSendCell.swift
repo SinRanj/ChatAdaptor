@@ -50,6 +50,10 @@ class ChatPostSendCell: ChatImageSendCell {
                     setConstraints(cellImageView: cellImageView2, rightView: cellImageView,rightConst: -4, lockImage: lockImage, voteLabel: voteLabel, voteCountLabel: voteCountLabel)
                     
                     constraintCustom(view: bubbleView, leftConst: -4, leftView: cellImageView2, leftViewAttribute: .left, leftSelfAttribute: NSLayoutConstraint.Attribute.left, rightConst: 4, rightView: cellImageView, rightViewAttribute: NSLayoutConstraint.Attribute.right, rightSelfAttribute: .right, bottomConst: 4, bottomView: cellImageView, bottomViewAttribute: NSLayoutConstraint.Attribute.bottom, bottomSelfAttribute: NSLayoutConstraint.Attribute.bottom, topConst: -4, topView: cellImageView, topViewAttribute: NSLayoutConstraint.Attribute.top, topSelfAttribute: .top)
+                    
+                    statusLabel.removeAllConstraints()
+                    
+                    constraintCustom(view: statusLabel, rightConst: -8, rightView: dateLabel, rightViewAttribute: NSLayoutConstraint.Attribute.left, rightSelfAttribute: NSLayoutConstraint.Attribute.right, topConst: 0, topView: dateLabel, topViewAttribute: NSLayoutConstraint.Attribute.top, topSelfAttribute: NSLayoutConstraint.Attribute.top)
                 }
             }
         }

@@ -112,7 +112,7 @@ class ChatCell: UITableViewCell {
         messageLabel.font = ChatConfigurations.Fonts.fonts.messageFont
         
         dateLabel.textAlignment = .right
-        dateLabel.textColor = ChatConfigurations.Colors.colors.bubbleTextColor
+        dateLabel.textColor = UIColor.black
         messageLabel.textColor = ChatConfigurations.Colors.colors.bubbleTextColor
         messageLabel.adjustsFontSizeToFitWidth = true
     }
